@@ -6,17 +6,16 @@ from vetor import Vetor
 
 pygame.init()
 # Define uma tela para o jogo
-resolucao = (1000, 1000)
+resolucao = (1600, 900)
 tela = pygame.display.set_mode(resolucao)
 
 
 sol = Sol()
-sol.velocidade.x = 0.2
-terra = Planeta((40, 70), 'sprites/Terra.png', 50, Vetor(0.3, 0.1))
+terra = Planeta(Vetor(100, 100), 'sprites/Terra.png', 50, Vetor(0, 0.1), 300)
 
 # Marca a diferença de tempo
 relogio = pygame.time.Clock()
-dt = 0
+dt = relogio.tick(75)
 
 while True:
     # Recebe os eventos do jogo
@@ -32,6 +31,7 @@ while True:
     sol.desenhar(tela)
     terra.movimento(dt)
     terra.desenhar(tela)
+    terra.gravitacao(sol, dt)
 
     # Determina a diferença de tempo do frame. Usado em velocidades
     dt = relogio.tick(75)
