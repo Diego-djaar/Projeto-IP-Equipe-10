@@ -14,7 +14,7 @@ class Sprite:
         # Definir sprite dimensionado
         self.sprite = pygame.image.load(imagem_arquivo).convert_alpha()
         self.sprite = pygame.transform.smoothscale(
-            self.sprite, (dimensoes[0], dimensoes[1]))
+            self.sprite, dimensoes)
         # Definir rect com base no argumento da posição
         self.rect = self.sprite.get_rect()
         self.posicao = posicao

@@ -40,6 +40,9 @@ class Planeta(Sprite):
         # Somar dv à velocidade
         self.velocidade = Vetor.soma_vetores(self.velocidade, dvel)
 
+        # Retornar à diferença de velocidade
+        return dvel
+
 
 class Sol(Planeta):
     # Define o Sol no centro do mapa
@@ -52,3 +55,13 @@ class Sol(Planeta):
     def __init__(self):
         super().__init__(self.posicao, self.imagem_arquivo,
                          self.tamanho, self.velocidade, self.massa)
+
+
+class Lua(Planeta):
+    # Satélite natural
+    def __init__(self, posicao: Vetor, imagem_arquivo: str, tamanho: float, velocidade: Vetor, massa: float):
+        super().__init__(posicao, imagem_arquivo, tamanho, velocidade, massa)
+
+    def orbita(self, gravidade: Vetor):
+        # Manter a Lua presa a um determinado Planeta
+        self.velocidade = Vetor.soma_vetores(self.velocidade, gravidade)
