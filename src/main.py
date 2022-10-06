@@ -3,6 +3,7 @@ import pygame
 from pygame.locals import *
 from astros import Sol, Planeta, Lua
 from vetor import Vetor
+from pygame.sprite import Group
 
 pygame.init()
 # Define uma tela para o jogo
@@ -13,6 +14,9 @@ tela = pygame.display.set_mode(resolucao)
 sol = Sol()
 terra = Planeta(Vetor(400, 450), 'sprites/Terra.png', 50, Vetor(0, 0.36), 200)
 lua = Lua(Vetor(335, 450), 'sprites/Lua.png', 20, Vetor(0, 0.78), 60)
+
+planetas = Group(terra)
+luas_da_terra = Group(lua)
 
 # Marca a diferença de tempo
 relogio = pygame.time.Clock()
@@ -28,15 +32,15 @@ while True:
 
     # Chamar as funções para todos os sprites aplicáveis
     tela.fill((0, 0, 0))
-    sol.movimento(dt)
-    sol.desenhar(tela)
-    grav_terra = terra.gravitacao(sol, dt)
-    terra.movimento(dt)
-    terra.desenhar(tela)
-    lua.orbita(grav_terra)
-    lua.gravitacao(terra, dt)
-    lua.movimento(dt)
-    lua.desenhar(tela)
+    sol.update(tela, dt)
+    planetas.update(tela, dt, [sol])
+    luas_da_terra.update(tela, dt, [terra], terra)
+
+    # Debug
+    if True:
+        for astro in [sol, lua, terra]:
+            if astro.rect.collidepoint(pygame.mouse.get_pos()):
+                pygame.draw.rect(tela, (255, 255, 255), astro.rect, 5)
 
     # Determina a diferença de tempo do frame. Usado em velocidades
     dt = relogio.tick(75)

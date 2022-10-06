@@ -1,15 +1,17 @@
+import pygame
 from math import sqrt
-from typing import Tuple
+from typing import List, Tuple
 from pygame.locals import *
-from sprite import Sprite
+from objeto import Objeto
 from vetor import Vetor
 
 # constante_gravitacional
 G = 0.05
 
 
-class Planeta(Sprite):
+class Planeta(Objeto):
     # Define um planeta qualquer
+    delta_velocidade = Vetor(0, 0)
     velocidade: Vetor
     massa: float
 
@@ -18,6 +20,15 @@ class Planeta(Sprite):
         self.massa = massa
         dimensoes = (tamanho, tamanho)
         super().__init__(posicao, imagem_arquivo, dimensoes)
+
+    def update(self, tela: pygame.Surface, dt: float, atracao_gravitacional: list = None) -> None:
+        # Guardar a diferença de velocidade até o próximo update
+        self.delta_velocidade = Vetor(0, 0)
+        self.movimento(dt)
+        if atracao_gravitacional is not None:
+            for planeta in atracao_gravitacional:
+                self.gravitacao(planeta, dt)
+        return super().update(tela)
 
     def movimento(self, dt: float):
         # Movimentação com base na velocidade: velocidade * dTempo
@@ -38,10 +49,8 @@ class Planeta(Sprite):
         # Velocidade vetorial
         dvel = Vetor.multiplicar_escalar(direcao, dv)
         # Somar dv à velocidade
+        self.delta_velocidade = Vetor.soma_vetores(self.delta_velocidade, dvel)
         self.velocidade = Vetor.soma_vetores(self.velocidade, dvel)
-
-        # Retornar à diferença de velocidade
-        return dvel
 
 
 class Sol(Planeta):
@@ -62,6 +71,15 @@ class Lua(Planeta):
     def __init__(self, posicao: Vetor, imagem_arquivo: str, tamanho: float, velocidade: Vetor, massa: float):
         super().__init__(posicao, imagem_arquivo, tamanho, velocidade, massa)
 
-    def orbita(self, gravidade: Vetor):
-        # Manter a Lua presa a um determinado Planeta
-        self.velocidade = Vetor.soma_vetores(self.velocidade, gravidade)
+    def update(self, tela: pygame.Surface, dt: float, atracao_gravitacional: list = None, orbita: Planeta = None) -> None:
+        update = super().update(tela, dt, atracao_gravitacional)
+        if orbita is not None:
+            self.orbita(orbita)
+        return update
+
+    def orbita(self, primario: Planeta):
+        # Manter a Lua presa a um determinado Planeta, ao aplicar a mesma aceleracao
+        self.delta_velocidade = Vetor.soma_vetores(
+            self.delta_velocidade, primario.delta_velocidade)
+        self.velocidade = Vetor.soma_vetores(
+            self.velocidade, primario.delta_velocidade)
