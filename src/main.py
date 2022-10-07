@@ -57,10 +57,10 @@ while True:
     planetas.update(tela, dt, [sol])
     luas_da_terra.update(tela, dt, [terra], terra)
 
+    grupo_nave.update(None, dt)
     grupo_nave.draw(tela)
-    grupo_nave.update()
+    grupo_misseis.update(None, dt)
     grupo_misseis.draw(tela)
-    grupo_misseis.update(tela, dt)
 
     # Debug
     if True:

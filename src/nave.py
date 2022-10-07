@@ -2,7 +2,7 @@ from email.headerregistry import Group
 from typing import List
 import pygame
 from pygame.locals import QUIT, KEYUP, KEYDOWN, K_SPACE
-from pygame import event
+from pygame import Surface, event
 from pygame import display
 from pygame.image import load
 from pygame.sprite import Sprite
@@ -13,21 +13,21 @@ import astros
 
 
 class Nave(Objeto):
-    speed: int
+    velocidade: int
     escudo: bool
-    velocidade: bool
+    velocidade_buff: bool
     impacto: bool
     misseis: Group
 
     # Sprite do personagem principal:
     def __init__(self, escudo, velocidade, impacto, misseis):
         super().__init__(Vetor(0, 0), 'images/espaconave.png', (80, 80))
-        self.speed = 2
+        self.velocidade = 0.2
         self.misseis = misseis
 
         # Booleanas que representam os buffs (se existem ou não):
         self.escudo = escudo
-        self.velocidade = velocidade
+        self.velocidade_buff = velocidade
         self.impacto = impacto
 
     def atirar(self):
@@ -36,21 +36,23 @@ class Nave(Objeto):
             Bombas(*self.rect.center)
         )
 
-    def update(self):
+    def update(self, tela: pygame.Surface, dt: float):
         # Movimentação da nave
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_LEFT]:
-            self.rect.x -= self.speed
+            self.posicao.x -= self.velocidade*dt
 
         if keys[pygame.K_RIGHT]:
-            self.rect.x += self.speed
+            self.posicao.x += self.velocidade*dt
 
         if keys[pygame.K_UP]:
-            self.rect.y -= self.speed
+            self.posicao.y -= self.velocidade*dt
 
         if keys[pygame.K_DOWN]:
-            self.rect.y += self.speed
+            self.posicao.y += self.velocidade*dt
+
+        super().update(tela)
 
 
 class Bombas(Planeta):

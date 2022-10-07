@@ -26,8 +26,9 @@ class Objeto(Sprite):
         self.desenhar(tela)
         return super().update()
 
-    def desenhar(self, tela: pygame.Surface):
+    def desenhar(self, tela: pygame.Surface = None):
         # Desenha o objeto na tela
         self.rect.x = self.posicao.x
         self.rect.y = self.posicao.y
-        tela.blit(self.image, self.rect)
+        if tela is not None:
+            tela.blit(self.image, self.rect)
