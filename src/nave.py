@@ -2,7 +2,7 @@ from email.headerregistry import Group
 from typing import List
 import pygame
 from pygame.locals import QUIT, KEYUP, KEYDOWN, K_SPACE
-from pygame import Surface, event
+from pygame import Rect, Surface, event
 from pygame import display
 from pygame.image import load
 from pygame.sprite import Sprite
@@ -65,4 +65,11 @@ class Bombas(Planeta):
     def update(self, tela: pygame.Surface, dt: float):
         if abs(self.rect.x) > 1600 or abs(self.rect.y) > 900:
             self.kill()
+        for astro in astros.lista_de_astros:
+            self.colisao(astro)
         super().update(tela, dt, astros.lista_de_astros)
+
+    def colisao(self, outro: Planeta):
+        if self.rect.colliderect(outro.rect):
+            self.kill()
+            return True
