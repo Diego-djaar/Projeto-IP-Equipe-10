@@ -7,6 +7,8 @@ from vetor import Vetor
 
 # constante_gravitacional
 G = 0.05
+# Conjunto de todos os astros
+global lista_de_astros
 
 
 class Planeta(Objeto):

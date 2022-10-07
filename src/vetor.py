@@ -1,7 +1,14 @@
+from typing import Tuple
+
+
 class Vetor:
     # Vetor em duas dimensões
     x: float
     y: float
+
+    def __init__(self, xy: Tuple[float, float]):
+        self.x = xy[0]
+        self.y = xy[1]
 
     def __init__(self, x, y):
         self.x = x
