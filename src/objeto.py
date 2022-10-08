@@ -11,7 +11,6 @@ class Objeto(Sprite):
     posicao: Vetor
 
     def __init__(self, posicao: Vetor, imagem_arquivo: str, dimensoes: Tuple[float, float]):
-        super().__init__()
         # Definir sprite dimensionado
         self.image = pygame.image.load(imagem_arquivo).convert_alpha()
         self.image = pygame.transform.smoothscale(
@@ -21,6 +20,7 @@ class Objeto(Sprite):
         self.posicao = posicao
         self.rect.x = self.posicao.x
         self.rect.y = self.posicao.y
+        super().__init__()
 
     def update(self, tela: pygame.Surface) -> None:
         self.desenhar(tela)
