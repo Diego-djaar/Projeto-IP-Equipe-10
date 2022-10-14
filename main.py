@@ -6,7 +6,7 @@ from random import randint,choice
 class Player(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
-		self.image = pygame.image.load('proto-graphics/player/player_0.png').convert_alpha()
+		self.image = pygame.image.load('graphics/player/player_0.png').convert_alpha()
 		self.image = pygame.transform.rotozoom(self.image,0,0.35)
 		self.rect = self.image.get_rect(center = (display_w*0.25, display_h*0.7))
 		self.gravity = 0
@@ -31,15 +31,15 @@ class Planet(pygame.sprite.Sprite):
 	def __init__(self, type):
 		super().__init__()
 		if type == 'small':
-			self.image = pygame.image.load('proto-graphics/planet/planet_0.png').convert_alpha()
+			self.image = pygame.image.load('graphics/planet/planet_0.png').convert_alpha()
 			self.image = pygame.transform.rotozoom(self.image,0,0.4)
 			self.speed = 6
 		elif type == 'medium':
-			self.image = pygame.image.load('proto-graphics/planet/planet_1.png').convert_alpha()
+			self.image = pygame.image.load('graphics/planet/planet_1.png').convert_alpha()
 			self.image = pygame.transform.rotozoom(self.image,0,0.6)
 			self.speed = 5
 		#elif type == 'large':
-			# self.image = pygame.image.load('proto-graphics/planet/planet_3.png').convert_alpha()
+			# self.image = pygame.image.load('graphics/planet/planet_3.png').convert_alpha()
 			# self.speed = 5
 		self.rect = self.image.get_rect(midleft = (display_w*1.5, randint(0,display_h)))
 		self.gravity = 0
@@ -59,10 +59,10 @@ class Boost(pygame.sprite.Sprite):
 		super().__init__()
 		self.type = type
 		if self.type == 'shield':
-			self.image = pygame.image.load('proto-graphics/boost/shield_0.png').convert_alpha()
+			self.image = pygame.image.load('graphics/boost/shield_0.png').convert_alpha()
 			self.image = pygame.transform.rotozoom(self.image,0,0.4)
 		elif self.type == 'speed':
-			self.image = pygame.image.load('proto-graphics/boost/speed_0.png').convert_alpha()
+			self.image = pygame.image.load('graphics/boost/speed_0.png').convert_alpha()
 			self.image = pygame.transform.rotozoom(self.image,0,0.35)
 		self.wave = randint(70,100)
 		self.rect = self.image.get_rect(midleft = (display_w*1.5, randint(display_h*0.3,display_h*0.7)))
@@ -133,7 +133,7 @@ pygame.time.set_timer(boost_timer,15000)
 # -----
 # SURFACES
 # -----
-galaxy_surf = pygame.image.load('proto-graphics/galaxy.png').convert()
+galaxy_surf = pygame.image.load('graphics/background/galaxy.png').convert()
 galaxy_surf = pygame.transform.rotozoom(galaxy_surf,0,0.8)
 
 # -----
