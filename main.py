@@ -3,6 +3,9 @@ import math
 from sys import exit
 from random import randint,choice
 
+# ---------
+# CLASSES
+# ---------
 class Player(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
@@ -19,7 +22,7 @@ class Player(pygame.sprite.Sprite):
 
 	def apply_gravity(self):
 		global game_active
-		self.gravity += 0.3
+		self.gravity += 0.25
 		self.rect.y += self.gravity
 		if self.rect.top > display_h+200 or self.rect.bottom < -200:
 			game_active = False
@@ -49,8 +52,6 @@ class Planet(pygame.sprite.Sprite):
 			self.kill()
 
 	def update(self):
-		# global speed_var
-		# self.speed += speed_var
 		self.rect.x -= self.speed
 		self.destroy()
 
@@ -83,11 +84,22 @@ class Boost(pygame.sprite.Sprite):
 		self.movement()
 		self.destroy()
 
+# ---------
+# FUNCTIONS
+# ---------
+
+def display_boosts(num_boost):
+    global display_w
+    for n in range(len(num_boost)):
+        boosts_surf = font.render(f'{num_boost[n]}',False,(250,200,250))
+        boosts_rect = boosts_surf.get_rect(center = (display_w-120+n*50,50))
+        display.blit(boosts_surf,boosts_rect)
+
 def display_score():
 	global start_time, display
 	current_time = int(pygame.time.get_ticks() / 1000) - start_time
 	score_surf = font.render(f'Score: {current_time}',False,(200,150,200))
-	score_rect = score_surf.get_rect(center = (400,50))
+	score_rect = score_surf.get_rect(topleft = (50,50))
 	display.blit(score_surf,score_rect)
 	return current_time
 
@@ -114,12 +126,12 @@ pygame.display.set_caption('Allien rescue')
 clock = pygame.time.Clock()
 font = pygame.font.Font(None, 30)
 
-# -----
+# ---------
 # VARIABLES
-# -----
+# ---------
 game_active = False
 start_time = angle = speed_var = 0
-num_boost = [0,0,0]
+num_boost = [0,0]
 
 # -----
 # TIMER
@@ -130,15 +142,15 @@ pygame.time.set_timer(planet_timer,3000)
 boost_timer = pygame.USEREVENT + 2
 pygame.time.set_timer(boost_timer,15000)
 
-# -----
+# --------
 # SURFACES
-# -----
+# --------
 galaxy_surf = pygame.image.load('graphics/background/galaxy.png').convert()
 galaxy_surf = pygame.transform.rotozoom(galaxy_surf,0,0.8)
 
-# -----
+# ------
 # GROUPS
-# -----
+# ------
 planet_group = pygame.sprite.Group()
 planet_rect_list = []
 
@@ -162,11 +174,9 @@ while True:
 
 		if game_active:
 			if event.type == planet_timer:
-				print('planet')
 				planet_group.add(Planet(choice(['small','small','medium'])))
 			if event.type == boost_timer:
 				boost_group.add(Boost(choice(['shield','speed'])))
-				print('boost')
 		else:
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
 				game_active = True
@@ -192,14 +202,10 @@ while True:
 		boost_group.update()
 
 		# Score and text display
-		score = display_score()
+		display_score()
+		display_boosts(num_boost)
 
-		# rect1 = pygame.draw.rect(display,'green',(x,y*math.sin(angle)+display_h*0.5,50,50))
-		# angle += 0.03
-		# x -= 5
 		collision_sprite()
-		# print(speed_var)
-		# speed_var += 0.0000001
 	else:
 		display.fill('Purple')
 		planet_group.empty()
