@@ -10,10 +10,11 @@ PLANET_TIMER: int
 PLANET_RECT_LIST = []
 PLANET_0_IMAGE: pygame.Surface = None
 PLANET_1_IMAGE: pygame.Surface = None
+PLANET_SPEED: int
 
 
 class Planet(pygame.sprite.Sprite):
-    def __init__(self, typo):
+    def __init__(self, typo, speed):
         super().__init__()
         current_module = sys.modules[__name__]
 
@@ -22,14 +23,14 @@ class Planet(pygame.sprite.Sprite):
                 current_module.PLANET_0_IMAGE = self.image = pygame.image.load('graphics/planet/planet_0.png').convert_alpha()
             self.image = current_module.PLANET_0_IMAGE
             self.image = pygame.transform.rotozoom(self.image, 0, 0.4)
-            self.speed = 6
+            self.speed = speed
 
         elif typo == 'medium':
             if current_module.PLANET_1_IMAGE is None:
                 current_module.PLANET_1_IMAGE = self.image = pygame.image.load('graphics/planet/planet_1.png').convert_alpha()
             self.image = current_module.PLANET_1_IMAGE
             self.image = pygame.transform.rotozoom(self.image, 0, 0.6)
-            self.speed = 5
+            self.speed = speed - 2
         # elif type == 'large':
             # self.image = pygame.image.load('graphics/planet/planet_3.png').convert_alpha()
             # self.speed = 5
