@@ -134,6 +134,13 @@ def main():
             planet.PLANET_GROUP.empty()
             boosts.BOOST_GROUP.empty()
 
+        # Debug
+        if True:
+            from itertools import chain
+            for sprite in chain(planet.PLANET_GROUP, player.PLAYER_GROUP, boosts.BOOST_GROUP):
+                if sprite.rect.collidepoint(pygame.mouse.get_pos()):
+                    pygame.draw.rect(display.DISPLAY, (255, 255, 255), sprite.rect, 5)
+
         pygame.display.update()
 
 
