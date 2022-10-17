@@ -14,13 +14,12 @@ from . import argumentos
 
 
 def main():
-    pygame.init()
-
-    screen_w, screen_h = pygame.display.Info().current_w, pygame.display.Info().current_h
-
     # ------
     # INICIALIZAÇÃO
     # ------
+
+    pygame.init()
+    screen_w, screen_h = pygame.display.Info().current_w, pygame.display.Info().current_h
 
     # Display
     display.DISPLAY = pygame.display.set_mode((screen_w/1.2, screen_h/1.2))
@@ -53,11 +52,11 @@ def main():
     boosts.BOOST_RECT_LIST = []
 
     # Velocidade dos objetos:
-    planet.PLANET_SPEED = pygame.USEREVENT + 3
-    pygame.time.set_timer(planet.PLANET_SPEED, 4000)
+    planet.PLANET_SPEED_EVENT = pygame.USEREVENT + 3
+    pygame.time.set_timer(planet.PLANET_SPEED_EVENT, 4000)
     planet_speed = 6
-    boosts.BOOST_SPEED = pygame.USEREVENT + 4
-    pygame.time.set_timer(boosts.BOOST_SPEED, 4000)
+    boosts.BOOST_SPEED_EVENT = pygame.USEREVENT + 4
+    pygame.time.set_timer(boosts.BOOST_SPEED_EVENT, 4000)
     boost_speed = 4
 
     # Player
@@ -82,16 +81,20 @@ def main():
 
             if player.GAME_ACTIVE:
                 # Eventos com o jogo ativo
-                if event.type == planet.PLANET_SPEED:
+
+                # Aceleração dos planetas e boosts
+                if event.type == planet.PLANET_SPEED_EVENT:
                     if planet_speed <= 20:
                         planet_speed += 0.5
-                if event.type == boosts.BOOST_SPEED:
+                if event.type == boosts.BOOST_SPEED_EVENT:
                     if boost_speed <= 20:
                         boost_speed += 0.5
+
                 if event.type == planet.PLANET_TIMER:
                     # Criar um planeta de tipo aleatório
                     planet.PLANET_GROUP.add(
                         Planet(choice(['small', 'small', 'medium']), planet_speed))
+
                 if event.type == boosts.BOOST_TIMER:
                     # Criar um boost aleatório
                     boosts.BOOST_GROUP.add(Boost(choice(['shield', 'speed']), boost_speed))
@@ -99,6 +102,7 @@ def main():
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     # (Re)começar o jogo
                     player.GAME_ACTIVE = True
+                    # Reiniciar variáveis
                     planet.PLANET_RECT_LIST.clear()
                     boosts.BOOST_RECT_LIST.clear()
                     boosts.BOOSTS_COLETADOS_DICT = dict(shield=0, speed=0)
@@ -138,6 +142,7 @@ def main():
             # Reset da velocidade dos objetos:
             boost_speed = 4
             planet_speed = 6
+
         # Debug
         if argumentos.DEBUG:
             from itertools import chain
