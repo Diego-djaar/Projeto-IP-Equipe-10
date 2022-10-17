@@ -134,6 +134,9 @@ def main():
             planet.PLANET_GROUP.empty()
             boosts.BOOST_GROUP.empty()
 
+            # Reset da velocidade dos objetos:
+            boost_speed = 4
+            planet_speed = 6
         # Debug
         if True:
             from itertools import chain
