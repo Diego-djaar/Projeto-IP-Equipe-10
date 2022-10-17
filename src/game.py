@@ -51,6 +51,14 @@ def main():
     boosts.BOOST_GROUP = pygame.sprite.Group()
     boosts.BOOST_RECT_LIST = []
 
+    # Velocidade dos objetos:
+    planet.PLANET_SPEED = pygame.USEREVENT + 3
+    pygame.time.set_timer(planet.PLANET_SPEED, 4000)
+    planet_speed = 6
+    boosts.BOOST_SPEED = pygame.USEREVENT + 4
+    pygame.time.set_timer(boosts.BOOST_SPEED, 4000)
+    boost_speed = 4
+
     # Player
     player.PLAYER_GROUP = pygame.sprite.GroupSingle()
     player.PLAYER_GROUP.add(player.Player())
@@ -73,13 +81,19 @@ def main():
 
             if player.GAME_ACTIVE:
                 # Eventos com o jogo ativo
+                if event.type == planet.PLANET_SPEED:
+                    if planet_speed <= 25:
+                        planet_speed += 0.5
+                if event.type == boosts.BOOST_SPEED:
+                    if boost_speed <= 20:
+                        boost_speed += 0.5
                 if event.type == planet.PLANET_TIMER:
                     # Criar um planeta de tipo aleatório
                     planet.PLANET_GROUP.add(
-                        Planet(choice(['small', 'small', 'medium'])))
+                        Planet(choice(['small', 'small', 'medium']), planet_speed))
                 if event.type == boosts.BOOST_TIMER:
                     # Criar um boost aleatório
-                    boosts.BOOST_GROUP.add(Boost(choice(['shield', 'speed'])))
+                    boosts.BOOST_GROUP.add(Boost(choice(['shield', 'speed']), boost_speed))
             else:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     # (Re)começar o jogo

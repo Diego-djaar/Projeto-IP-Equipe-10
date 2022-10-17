@@ -11,10 +11,11 @@ BOOST_RECT_LIST = []
 BOOST_TIMER: int
 SHIELD_IMAGE: pygame.Surface = None
 SPEED_IMAGE: pygame.Surface = None
+BOOST_SPEED: int
 
 
 class Boost(pygame.sprite.Sprite):
-    def __init__(self, typo):
+    def __init__(self, typo, speed):
         super().__init__()
         self.type = typo
         current_module = sys.modules[__name__]
@@ -34,7 +35,7 @@ class Boost(pygame.sprite.Sprite):
         self.wave = randint(70, 100)
         self.rect = self.image.get_rect(midleft=(display.DISPLAY_W*1.5, randint(display.DISPLAY_H*0.3, display.DISPLAY_H*0.7)))
         self.angle = 0
-        self.speed = randint(4, 6)
+        self.speed = speed
         self.height = randint(display.DISPLAY_H*0.3, display.DISPLAY_H*0.7)
 
     def movement(self, delta_tempo: float):
