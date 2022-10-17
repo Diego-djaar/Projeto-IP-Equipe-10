@@ -118,6 +118,7 @@ def main():
             # Jogo inativo
             display.DISPLAY.fill('Purple')
             planet.PLANET_GROUP.empty()
+            boosts.BOOST_GROUP.empty()
 
         pygame.display.update()
 
