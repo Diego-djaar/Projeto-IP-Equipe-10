@@ -11,6 +11,7 @@ BOOST_RECT_LIST = []
 BOOST_TIMER: int
 SHIELD_IMAGE: pygame.Surface = None
 SPEED_IMAGE: pygame.Surface = None
+SLOW_IMAGE: pygame.Surface = None
 BOOST_SPEED: int
 
 
@@ -31,7 +32,14 @@ class Boost(pygame.sprite.Sprite):
                 current_module.SPEED_IMAGE = self.image = pygame.image.load('graphics/boost/speed_0.png').convert_alpha()
             self.image = current_module.SPEED_IMAGE
             self.image = pygame.transform.rotozoom(self.image, 0, 0.35)
-
+        
+        # Definindo boost de desacelerar o tempo:
+        elif self.type == 'slow':
+            if current_module.SLOW_IMAGE is None:
+                current_module.SLOW_IMAGE = self.image = pygame.image.load('graphics/boost/slow_0.png').convert_alpha()
+            self.image = current_module.SLOW_IMAGE
+            self.image = pygame.transform.rotozoom(self.image, 0, 0.2)
+        
         self.wave = randint(70, 100)
         self.rect = self.image.get_rect(midleft=(display.DISPLAY_W*1.5, randint(display.DISPLAY_H*0.3, display.DISPLAY_H*0.7)))
         self.angle = 0

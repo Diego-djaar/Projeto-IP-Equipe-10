@@ -90,10 +90,10 @@ def main():
                 if event.type == planet.PLANET_TIMER:
                     # Criar um planeta de tipo aleatório
                     planet.PLANET_GROUP.add(
-                        Planet(choice(['small', 'small', 'medium']), planet_speed))
+                        Planet(choice(['small', 'small', 'medium']), planet_speed * delta_tempo))
                 if event.type == boosts.BOOST_TIMER:
                     # Criar um boost aleatório
-                    boosts.BOOST_GROUP.add(Boost(choice(['shield', 'speed']), boost_speed))
+                    boosts.BOOST_GROUP.add(Boost(choice(['shield', 'speed']), boost_speed * delta_tempo))
             else:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     # (Re)começar o jogo
