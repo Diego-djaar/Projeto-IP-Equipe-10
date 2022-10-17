@@ -29,9 +29,11 @@ def main():
 
     # Variáveis de jogo
     player.GAME_ACTIVE = False
-    clock = pygame.time.Clock()
-    time.START_TIME = 0  # angle = speed_var = 0
     boosts.BOOSTS_COLETADOS_DICT = dict(shield=0, speed=0)
+
+    # Tempo
+    clock = pygame.time.Clock()
+    time.START_TIME = 0
 
     # Surfaces
     galaxy_surf = pygame.image.load('graphics/background/galaxy.png').convert()
@@ -58,6 +60,8 @@ def main():
     # ------
 
     while True:
+        delta_tempo = clock.tick(100)*0.06
+
         for event in pygame.event.get():
             # Eventos
             player.PLAYER_GROUP.sprite.event_handler(event)
@@ -94,15 +98,15 @@ def main():
             # Ações a cada frame no jogo ativo
 
             # Player
-            player.PLAYER_GROUP.update()
+            player.PLAYER_GROUP.update(delta_tempo)
             player.PLAYER_GROUP.draw(display.DISPLAY)
 
             # Planets
-            planet.PLANET_GROUP.update()
+            planet.PLANET_GROUP.update(delta_tempo)
             planet.PLANET_GROUP.draw(display.DISPLAY)
 
             # Boosts
-            boosts.BOOST_GROUP.update()
+            boosts.BOOST_GROUP.update(delta_tempo)
             boosts.BOOST_GROUP.draw(display.DISPLAY)
 
             # Score and text display
@@ -116,7 +120,6 @@ def main():
             planet.PLANET_GROUP.empty()
 
         pygame.display.update()
-        clock.tick(60)
 
 
 if __name__ == "__main__" or __name__ == "__game__":
