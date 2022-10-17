@@ -41,7 +41,7 @@ class Boost(pygame.sprite.Sprite):
     def movement(self, delta_tempo: float):
         self.rect.x -= self.speed*delta_tempo
         self.rect.y = self.wave*math.sin(self.angle)+self.height
-        self.angle += 0.03
+        self.angle += 0.03*delta_tempo
 
     def destroy(self):
         if self.rect.x < -self.rect.y:

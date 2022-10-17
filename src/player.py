@@ -18,11 +18,11 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=(display.DISPLAY_W*0.25, display.DISPLAY_H*0.7))
         self.gravity = 0
 
-    def event_handler(self, event):
+    def event_handler(self, event, delta_tempo: float):
         pygame.key.set_repeat(80)
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                self.gravity -= 3
+                self.gravity -= 4*delta_tempo
 
     def apply_gravity(self, delta_tempo: float):
         #global game_active

@@ -72,7 +72,7 @@ def main():
 
         for event in pygame.event.get():
             # Eventos
-            player.PLAYER_GROUP.sprite.event_handler(event)
+            player.PLAYER_GROUP.sprite.event_handler(event, delta_tempo)
 
             if event.type == pygame.QUIT:
                 # Sair do jogo
@@ -100,7 +100,7 @@ def main():
                     player.GAME_ACTIVE = True
                     planet.PLANET_RECT_LIST.clear()
                     boosts.BOOST_RECT_LIST.clear()
-                    boosts.BOOSTS_COLETADOS_DICT.clear()
+                    boosts.BOOSTS_COLETADOS_DICT = dict(shield=0, speed=0)
                     player.PLAYER_GROUP.sprite.rect.y = display.DISPLAY_H*0.6
                     player.PLAYER_GROUP.sprite.gravity = 0
                     time.START_TIME = int(pygame.time.get_ticks() / 1000)
