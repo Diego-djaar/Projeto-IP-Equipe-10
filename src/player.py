@@ -24,13 +24,13 @@ class Player(pygame.sprite.Sprite):
             if event.key == pygame.K_UP:
                 self.gravity -= 3
 
-    def apply_gravity(self):
+    def apply_gravity(self, delta_tempo: float):
         #global game_active
-        self.gravity += 0.25
-        self.rect.y += self.gravity
+        self.gravity += 0.25*delta_tempo
+        self.rect.y += self.gravity*delta_tempo
         if self.rect.top > display.DISPLAY_H+200 or self.rect.bottom < -200:
             current_module = sys.modules[__name__]
             current_module.GAME_ACTIVE = False
 
-    def update(self):
-        self.apply_gravity()
+    def update(self, delta_tempo: float):
+        self.apply_gravity(delta_tempo)

@@ -37,8 +37,8 @@ class Boost(pygame.sprite.Sprite):
         self.speed = randint(4, 6)
         self.height = randint(display.DISPLAY_H*0.3, display.DISPLAY_H*0.7)
 
-    def movement(self):
-        self.rect.x -= self.speed
+    def movement(self, delta_tempo: float):
+        self.rect.x -= self.speed*delta_tempo
         self.rect.y = self.wave*math.sin(self.angle)+self.height
         self.angle += 0.03
 
@@ -46,8 +46,8 @@ class Boost(pygame.sprite.Sprite):
         if self.rect.x < -self.rect.y:
             self.kill()
 
-    def update(self):
-        self.movement()
+    def update(self, delta_tempo: float):
+        self.movement(delta_tempo)
         self.destroy()
 
 # ---------

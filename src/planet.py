@@ -40,6 +40,6 @@ class Planet(pygame.sprite.Sprite):
         if self.rect.x < -self.rect.w:
             self.kill()
 
-    def update(self):
-        self.rect.x -= self.speed
+    def update(self, delta_tempo: float):
+        self.rect.x -= self.speed*delta_tempo
         self.destroy()
