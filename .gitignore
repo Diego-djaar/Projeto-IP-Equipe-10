@@ -1,3 +1,4 @@
 # Ingorar arquivos no repositório
-/src/__pycache__
-chave_projeto_ip*
+/__pycache__
+*/__pycache__
+.vscode/
