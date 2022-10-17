@@ -17,95 +17,101 @@ def main():
 
     screen_w, screen_h = pygame.display.Info().current_w, pygame.display.Info().current_h
 
+    # ------
+    # INICIALIZAÇÃO
+    # ------
+
+    # Display
     display.DISPLAY = pygame.display.set_mode((screen_w/1.2, screen_h/1.2))
     display.DISPLAY_W, display.DISPLAY_H = display.DISPLAY.get_size()
-
-    pygame.display.set_caption('Allien rescue')
-    clock = pygame.time.Clock()
+    pygame.display.set_caption('Alien rescue')
     display.FONT = pygame.font.Font(None, 30)
 
-    # ---------
-    # VARIABLES
-    # ---------
+    # Variáveis de jogo
     player.GAME_ACTIVE = False
+    clock = pygame.time.Clock()
     time.START_TIME = 0  # angle = speed_var = 0
-    boosts.NUM_BOOST = [0, 0]
+    boosts.BOOSTS_COLETADOS_DICT = dict(shield=0, speed=0)
 
-    # -----
-    # TIMER
-    # -----
-    planet.PLANET_TIMER = pygame.USEREVENT + 1
-    pygame.time.set_timer(planet.PLANET_TIMER, 3000)
-
-    boosts.BOOST_TIMER = pygame.USEREVENT + 2
-    pygame.time.set_timer(boosts.BOOST_TIMER, 15000)
-
-    # --------
-    # SURFACES
-    # --------
+    # Surfaces
     galaxy_surf = pygame.image.load('graphics/background/galaxy.png').convert()
     galaxy_surf = pygame.transform.rotozoom(galaxy_surf, 0, 0.8)
 
-    # ------
-    # GROUPS
-    # ------
+    # Planetas
+    planet.PLANET_TIMER = pygame.USEREVENT + 1
+    pygame.time.set_timer(planet.PLANET_TIMER, 3000)
     planet.PLANET_GROUP = pygame.sprite.Group()
     planet.PLANET_RECT_LIST = []
 
+    # Boosts
+    boosts.BOOST_TIMER = pygame.USEREVENT + 2
+    pygame.time.set_timer(boosts.BOOST_TIMER, 15000)
     boosts.BOOST_GROUP = pygame.sprite.Group()
     boosts.BOOST_RECT_LIST = []
 
-    player.PLAYER = pygame.sprite.GroupSingle()
-    player.PLAYER.add(player.Player())
+    # Player
+    player.PLAYER_GROUP = pygame.sprite.GroupSingle()
+    player.PLAYER_GROUP.add(player.Player())
 
-    #x = display.DISPLAY_W*1.5
-    #y = 100
+    # ------
+    # LOOP PRINCIPAL
+    # ------
 
     while True:
         for event in pygame.event.get():
-
-            player.PLAYER.sprite.event_handler(event)
+            # Eventos
+            player.PLAYER_GROUP.sprite.event_handler(event)
 
             if event.type == pygame.QUIT:
+                # Sair do jogo
                 pygame.quit()
                 sys.exit()
 
             if player.GAME_ACTIVE:
+                # Eventos com o jogo ativo
                 if event.type == planet.PLANET_TIMER:
+                    # Criar um planeta de tipo aleatório
                     planet.PLANET_GROUP.add(
                         Planet(choice(['small', 'small', 'medium'])))
                 if event.type == boosts.BOOST_TIMER:
+                    # Criar um boost aleatório
                     boosts.BOOST_GROUP.add(Boost(choice(['shield', 'speed'])))
             else:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    # (Re)começar o jogo
                     player.GAME_ACTIVE = True
                     planet.PLANET_RECT_LIST.clear()
                     boosts.BOOST_RECT_LIST.clear()
-                    player.PLAYER.sprite.rect.y = display.DISPLAY_H*0.6
-                    player.PLAYER.sprite.gravity = 0  # speed_var = 0
+                    boosts.BOOSTS_COLETADOS_DICT.clear()
+                    player.PLAYER_GROUP.sprite.rect.y = display.DISPLAY_H*0.6
+                    player.PLAYER_GROUP.sprite.gravity = 0
                     time.START_TIME = int(pygame.time.get_ticks() / 1000)
 
+        # Desenha o fundo galáctico
         display.DISPLAY.blit(galaxy_surf, (0, 0))
 
         if player.GAME_ACTIVE:
+            # Ações a cada frame no jogo ativo
+
             # Player
-            player.PLAYER.draw(display.DISPLAY)
-            player.PLAYER.update()
+            player.PLAYER_GROUP.update()
+            player.PLAYER_GROUP.draw(display.DISPLAY)
 
             # Planets
-            planet.PLANET_GROUP.draw(display.DISPLAY)
             planet.PLANET_GROUP.update()
+            planet.PLANET_GROUP.draw(display.DISPLAY)
 
             # Boosts
-            boosts.BOOST_GROUP.draw(display.DISPLAY)
             boosts.BOOST_GROUP.update()
+            boosts.BOOST_GROUP.draw(display.DISPLAY)
 
             # Score and text display
             display_score()
-            display_boosts(boosts.NUM_BOOST)
+            display_boosts(boosts.BOOSTS_COLETADOS_DICT)
 
             collision_sprite()
         else:
+            # Jogo inativo
             display.DISPLAY.fill('Purple')
             planet.PLANET_GROUP.empty()
 

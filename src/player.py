@@ -6,7 +6,7 @@ from . import display
 from . import collision
 
 
-PLAYER: pygame.sprite.GroupSingle
+PLAYER_GROUP: pygame.sprite.GroupSingle
 GAME_ACTIVE: bool
 
 
