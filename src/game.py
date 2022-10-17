@@ -82,7 +82,7 @@ def main():
             if player.GAME_ACTIVE:
                 # Eventos com o jogo ativo
                 if event.type == planet.PLANET_SPEED:
-                    if planet_speed <= 25:
+                    if planet_speed <= 20:
                         planet_speed += 0.5
                 if event.type == boosts.BOOST_SPEED:
                     if boost_speed <= 20:
