@@ -48,7 +48,7 @@ class Boost(pygame.sprite.Sprite):
 
     def try_destroy(self):
         # Destruir ao sair da tela
-        if self.rect.x < -50:
+        if self.rect.x < -1000:
             self.kill()
 
     def update(self, delta_tempo: float):

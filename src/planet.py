@@ -39,7 +39,7 @@ class Planet(pygame.sprite.Sprite):
         self.gravity = 0
 
     def try_destroy(self):
-        if self.rect.x < -50:
+        if self.rect.x < -1000:
             self.kill()
 
     def movement(self, delta_tempo: float):
