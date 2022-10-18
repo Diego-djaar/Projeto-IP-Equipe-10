@@ -11,19 +11,19 @@ from . import planet
 from . import boosts
 from . import display
 from . import time
+from . import argumentos
 from . import tiro
 
 
 def main():
-    pygame.init()
-
-    screen_w, screen_h = pygame.display.Info().current_w, pygame.display.Info().current_h
-
     # ------
     # INICIALIZAÇÃO
     # ------
 
+    pygame.init()
+
     # Display
+    screen_w, screen_h = pygame.display.Info().current_w, pygame.display.Info().current_h
     display.DISPLAY = pygame.display.set_mode((screen_w/1.2, screen_h/1.2))
     display.DISPLAY_W, display.DISPLAY_H = display.DISPLAY.get_size()
     pygame.display.set_caption('Alien rescue')
@@ -34,12 +34,12 @@ def main():
     boosts.BOOSTS_COLETADOS_DICT = dict(shield=0, speed=0)
 
     # Tempo
-    clock = pygame.time.Clock()
+    time.CLOCK = pygame.time.Clock()
     time.START_TIME = 0
 
-    # Surfaces
-    galaxy_surf = pygame.image.load('graphics/background/galaxy.png').convert()
-    galaxy_surf = pygame.transform.rotozoom(galaxy_surf, 0, 0.8)
+    # Fundo
+    display.GALAXY_SURF = pygame.image.load('graphics/background/galaxy.png').convert()
+    display.GALAXY_SURF = pygame.transform.rotozoom(display.GALAXY_SURF, 0, 0.8)
 
     # Planetas
     planet.PLANET_TIMER = pygame.USEREVENT + 1
@@ -54,12 +54,13 @@ def main():
     boosts.BOOST_RECT_LIST = []
 
     # Velocidade dos objetos:
-    planet.PLANET_SPEED = pygame.USEREVENT + 3
-    pygame.time.set_timer(planet.PLANET_SPEED, 4000)
-    planet_speed = 6
-    boosts.BOOST_SPEED = pygame.USEREVENT + 4
-    pygame.time.set_timer(boosts.BOOST_SPEED, 4000)
-    boost_speed = 4
+    planet.PLANET_SPEED_EVENT = pygame.USEREVENT + 3
+    pygame.time.set_timer(planet.PLANET_SPEED_EVENT, 4000)
+    planet.PLANET_SPEED_ATUAL = planet.PLANET_SPEED_BASE
+
+    boosts.BOOST_SPEED_EVENT = pygame.USEREVENT + 4
+    pygame.time.set_timer(boosts.BOOST_SPEED_EVENT, 4000)
+    boosts.BOOST_SPEED_ATUAL = boosts.BOOST_SPEED_BASE
 
     # Player
     player.PLAYER_GROUP = pygame.sprite.GroupSingle()
@@ -76,7 +77,7 @@ def main():
     # ------
 
     while True:
-        delta_tempo = clock.tick(100)*0.06
+        delta_tempo = time.CLOCK.tick(100)*0.06
 
         for event in pygame.event.get():
             # Eventos
@@ -89,23 +90,28 @@ def main():
 
             if player.GAME_ACTIVE:
                 # Eventos com o jogo ativo
-                if event.type == planet.PLANET_SPEED:
-                    if planet_speed <= 20:
-                        planet_speed += 0.5
-                if event.type == boosts.BOOST_SPEED:
-                    if boost_speed <= 20:
-                        boost_speed += 0.5
+
+                # Aceleração dos planetas e boosts
+                if event.type == planet.PLANET_SPEED_EVENT:
+                    if planet.PLANET_SPEED_ATUAL <= 20:
+                        planet.PLANET_SPEED_ATUAL += 0.5
+                if event.type == boosts.BOOST_SPEED_EVENT:
+                    if boosts.BOOST_SPEED_ATUAL <= 20:
+                        boosts.BOOST_SPEED_ATUAL += 0.5
+
                 if event.type == planet.PLANET_TIMER:
                     # Criar um planeta de tipo aleatório
                     planet.PLANET_GROUP.add(
-                        Planet(choice(['small', 'small', 'medium']), planet_speed))
+                        Planet(choice(['small', 'small', 'medium']), planet.PLANET_SPEED_ATUAL))
+
                 if event.type == boosts.BOOST_TIMER:
                     # Criar um boost aleatório
-                    boosts.BOOST_GROUP.add(Boost(choice(['shield', 'speed']), boost_speed))
+                    boosts.BOOST_GROUP.add(Boost(choice(['shield', 'speed', 'slow']), boosts.BOOST_SPEED_ATUAL))
             else:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     # (Re)começar o jogo
                     player.GAME_ACTIVE = True
+                    # Reiniciar variáveis
                     planet.PLANET_RECT_LIST.clear()
                     boosts.BOOST_RECT_LIST.clear()
                     boosts.BOOSTS_COLETADOS_DICT = dict(shield=0, speed=0)
@@ -114,7 +120,7 @@ def main():
                     time.START_TIME = int(pygame.time.get_ticks() / 1000)
 
         # Desenha o fundo galáctico
-        display.DISPLAY.blit(galaxy_surf, (0, 0))
+        display.DISPLAY.blit(display.GALAXY_SURF, (0, 0))
 
         if player.GAME_ACTIVE:
             # Ações a cada frame no jogo ativo
@@ -131,7 +137,7 @@ def main():
             boosts.BOOST_GROUP.update(delta_tempo)
             boosts.BOOST_GROUP.draw(display.DISPLAY)
 
-            # Score and text display
+            # Display (score e boosts)
             display_score()
             display_boosts(boosts.BOOSTS_COLETADOS_DICT)
 
@@ -139,6 +145,7 @@ def main():
             tiro.TIRO_GROUP.update()
             tiro.TIRO_GROUP.draw(display.DISPLAY)
 
+            # Detectar colisões (player/planetas e player/boosts)
             collision_sprite()
         else:
             # Jogo inativo
@@ -147,10 +154,11 @@ def main():
             boosts.BOOST_GROUP.empty()
 
             # Reset da velocidade dos objetos:
-            boost_speed = 4
-            planet_speed = 6
+            boosts.BOOST_SPEED_ATUAL = boosts.BOOST_SPEED_BASE
+            planet.PLANET_SPEED_ATUAL = planet.PLANET_SPEED_BASE
+
         # Debug
-        if True:
+        if argumentos.DEBUG:
             from itertools import chain
             for sprite in chain(planet.PLANET_GROUP, player.PLAYER_GROUP, boosts.BOOST_GROUP, tiro.TIRO_GROUP):
                 if sprite.rect.collidepoint(pygame.mouse.get_pos()):
