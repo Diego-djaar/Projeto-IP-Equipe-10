@@ -152,7 +152,7 @@ def main():
         # Debug
         if True:
             from itertools import chain
-            for sprite in chain(planet.PLANET_GROUP, player.PLAYER_GROUP, boosts.BOOST_GROUP):
+            for sprite in chain(planet.PLANET_GROUP, player.PLAYER_GROUP, boosts.BOOST_GROUP, tiro.TIRO_GROUP):
                 if sprite.rect.collidepoint(pygame.mouse.get_pos()):
                     pygame.draw.rect(display.DISPLAY, (255, 255, 255), sprite.rect, 5)
 

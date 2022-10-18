@@ -4,9 +4,11 @@ import math
 from . import display
 
 TIRO_GROUP: pygame.sprite.Group
-TIRO_TIMER: int
+TIRO_TIMER = 0
+TIRO_INTERVALO = 10
 TIRO_RECT_LIST = []
 TIRO_SPEED: int
+
 
 class Tiro(pygame.sprite.Sprite):
     def __init__(self, x, y):
@@ -15,7 +17,7 @@ class Tiro(pygame.sprite.Sprite):
         self.image = pygame.image.load('sprites/tiro.png')
         self.rect = self.image.get_rect(center=(x, y))
 
-        ############## ALTERAÇÕES
+        # ALTERAÇÕES
         # retorna largura e altura da imagem
         self.size = self.image.get_size()
         # ajusta tamanho do sprite
