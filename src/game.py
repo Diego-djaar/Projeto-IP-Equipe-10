@@ -5,11 +5,13 @@ from .planet import Planet
 from .boosts import Boost, display_boosts
 from .score import display_score
 from .collision import collision_sprite
+from .tiro import Tiro
 from . import player
 from . import planet
 from . import boosts
 from . import display
 from . import time
+from . import tiro
 
 
 def main():
@@ -62,6 +64,12 @@ def main():
     # Player
     player.PLAYER_GROUP = pygame.sprite.GroupSingle()
     player.PLAYER_GROUP.add(player.Player())
+
+    # Tiros
+    tiro.TIRO_GROUP = pygame.sprite.Group()
+    tiro.TIRO_SPEED = pygame.USEREVENT + 5
+    pygame.time.set_timer(tiro.TIRO_SPEED, 4000)
+    tiro.TIRO_RECT_LIST = []
 
     # ------
     # LOOP PRINCIPAL
@@ -126,6 +134,10 @@ def main():
             # Score and text display
             display_score()
             display_boosts(boosts.BOOSTS_COLETADOS_DICT)
+
+            # Tiros
+            tiro.TIRO_GROUP.update()
+            tiro.TIRO_GROUP.draw(display.DISPLAY)
 
             collision_sprite()
         else:
