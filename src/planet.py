@@ -11,6 +11,8 @@ PLANET_RECT_LIST = []
 PLANET_0_IMAGE: pygame.Surface = None
 PLANET_1_IMAGE: pygame.Surface = None
 PLANET_SPEED_EVENT: int
+PLANET_SPEED_BASE = 6
+PLANET_SPEED_ATUAL = 6
 
 
 class Planet(pygame.sprite.Sprite):
