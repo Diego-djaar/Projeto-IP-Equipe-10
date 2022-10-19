@@ -21,14 +21,16 @@ class Player(pygame.sprite.Sprite):
     def event_handler(self, event, delta_tempo: float):
         pygame.key.set_repeat(80)
         if event.type == pygame.KEYDOWN:
+            # Move para cima ao usar seta para cima
             if event.key == pygame.K_UP:
                 self.gravity -= 4*delta_tempo
 
     def apply_gravity(self, delta_tempo: float):
-        #global game_active
+        # Cai para baixo
         self.gravity += 0.25*delta_tempo
         self.rect.y += self.gravity*delta_tempo
         if self.rect.top > display.DISPLAY_H+200 or self.rect.bottom < -200:
+            # Morre ao sair do display
             current_module = sys.modules[__name__]
             current_module.GAME_ACTIVE = False
 
