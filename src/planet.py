@@ -34,7 +34,9 @@ class Planet(pygame.sprite.Sprite):
         # elif type == 'large':
             # self.image = pygame.image.load('graphics/planet/planet_3.png').convert_alpha()
             # self.speed = 5
-        self.rect = self.image.get_rect(midleft=(display.DISPLAY_W*1.5, randint(0, display.DISPLAY_H)))
+        self.mask = pygame.mask.from_surface(self.image)
+        self.rect = self.mask.get_rect(
+           midleft=(display_w*1.5, randint(0, display_h)))
         self.gravity = 0
 
     def destroy(self):
