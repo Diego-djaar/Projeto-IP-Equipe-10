@@ -10,6 +10,7 @@ from . import planet
 from . import boosts
 from . import display
 from . import time
+from . import time
 
 
 def main():
