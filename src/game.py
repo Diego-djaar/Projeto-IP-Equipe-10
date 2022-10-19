@@ -5,12 +5,14 @@ from .planet import Planet
 from .boosts import Boost, display_boosts
 from .score import display_score
 from .collision import collision_sprite
+from .tiro import Tiro
 from . import player
 from . import planet
 from . import boosts
 from . import display
 from . import time
 from . import argumentos
+from . import tiro
 
 
 def main():
@@ -64,6 +66,19 @@ def main():
     player.PLAYER_GROUP = pygame.sprite.GroupSingle()
     player.PLAYER_GROUP.add(player.Player())
 
+    # Tiros
+    tiro.TIRO_GROUP = pygame.sprite.Group()
+    tiro.TIRO_SPEED = pygame.USEREVENT + 5
+    pygame.time.set_timer(tiro.TIRO_SPEED, 4000)
+    tiro.TIRO_RECT_LIST = []
+
+    if argumentos.DEBUG:
+        mouse_pos = pygame.sprite.Sprite()
+        mouse_pos.image = pygame.image.load('./graphics/planet/planet_1.png').convert_alpha()
+        mouse_pos.rect = pygame.Rect(0, 0, 5, 5)
+        mouse_pos.image = pygame.transform.scale(mouse_pos.image, (mouse_pos.rect.height, mouse_pos.rect.width))
+        mouse_pos_g = pygame.sprite.GroupSingle(mouse_pos)
+
     # ------
     # LOOP PRINCIPAL
     # ------
@@ -98,7 +113,7 @@ def main():
 
                 if event.type == boosts.BOOST_TIMER:
                     # Criar um boost aleatório
-                    boosts.BOOST_GROUP.add(Boost(choice(['shield', 'speed']), boosts.BOOST_SPEED_ATUAL))
+                    boosts.BOOST_GROUP.add(Boost(choice(['shield', 'speed', 'slow']), boosts.BOOST_SPEED_ATUAL))
             else:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     # (Re)começar o jogo
@@ -133,6 +148,10 @@ def main():
             display_score()
             display_boosts(boosts.BOOSTS_COLETADOS_DICT)
 
+            # Tiros
+            tiro.TIRO_GROUP.update()
+            tiro.TIRO_GROUP.draw(display.DISPLAY)
+
             # Detectar colisões (player/planetas e player/boosts)
             collision_sprite()
         else:
@@ -148,8 +167,10 @@ def main():
         # Debug
         if argumentos.DEBUG:
             from itertools import chain
-            for sprite in chain(planet.PLANET_GROUP, player.PLAYER_GROUP, boosts.BOOST_GROUP):
-                if sprite.rect.collidepoint(pygame.mouse.get_pos()):
+            mouse_pos.rect.center = pygame.mouse.get_pos()
+            # mouse_pos_g.draw(display.DISPLAY)
+            for sprite in chain(planet.PLANET_GROUP, player.PLAYER_GROUP, boosts.BOOST_GROUP, tiro.TIRO_GROUP):
+                if pygame.sprite.spritecollide(sprite, mouse_pos_g, False, pygame.sprite.collide_mask):
                     pygame.draw.rect(display.DISPLAY, (255, 255, 255), sprite.rect, 5)
 
         pygame.display.update()
