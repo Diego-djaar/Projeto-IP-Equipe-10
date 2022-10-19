@@ -63,6 +63,13 @@ def main():
     player.PLAYER_GROUP = pygame.sprite.GroupSingle()
     player.PLAYER_GROUP.add(player.Player())
 
+    if True:
+        mouse_pos = pygame.sprite.Sprite()
+        mouse_pos.image = pygame.image.load('./graphics/planet/planet_1.png').convert_alpha()
+        mouse_pos.rect = pygame.Rect(0, 0, 5, 5)
+        mouse_pos.image = pygame.transform.scale(mouse_pos.image, (mouse_pos.rect.height, mouse_pos.rect.width))
+        mouse_pos_g = pygame.sprite.GroupSingle(mouse_pos)
+
     # ------
     # LOOP PRINCIPAL
     # ------
@@ -140,8 +147,10 @@ def main():
         # Debug
         if True:
             from itertools import chain
+            mouse_pos.rect.center = pygame.mouse.get_pos()
+            # mouse_pos_g.draw(display.DISPLAY)
             for sprite in chain(planet.PLANET_GROUP, player.PLAYER_GROUP, boosts.BOOST_GROUP):
-                if sprite.rect.collidepoint(pygame.mouse.get_pos()):
+                if pygame.sprite.spritecollide(sprite, mouse_pos_g, False, pygame.sprite.collide_mask):
                     pygame.draw.rect(display.DISPLAY, (255, 255, 255), sprite.rect, 5)
 
         pygame.display.update()
