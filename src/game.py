@@ -31,7 +31,7 @@ def main():
 
     # Variáveis de jogo
     player.GAME_ACTIVE = False
-    boosts.BOOSTS_COLETADOS_DICT = dict(shield=0, speed=0)
+    boosts.BOOSTS_COLETADOS_DICT = dict(shield=0, speed=0, slow=0)
 
     # Tempo
     time.CLOCK = pygame.time.Clock()
@@ -121,7 +121,7 @@ def main():
                     # Reiniciar variáveis
                     planet.PLANET_RECT_LIST.clear()
                     boosts.BOOST_RECT_LIST.clear()
-                    boosts.BOOSTS_COLETADOS_DICT = dict(shield=0, speed=0)
+                    boosts.BOOSTS_COLETADOS_DICT = dict(shield=0, speed=0, slow=0)
                     player.PLAYER_GROUP.sprite.rect.y = display.DISPLAY_H*0.6
                     player.PLAYER_GROUP.sprite.gravity = 0
                     time.START_TIME = int(pygame.time.get_ticks() / 1000)
