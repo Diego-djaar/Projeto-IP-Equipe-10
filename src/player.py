@@ -15,7 +15,8 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load('graphics/player/player_0.png').convert_alpha()
         self.image = pygame.transform.rotozoom(self.image, 0, 0.35)
-        self.rect = self.image.get_rect(center=(display.DISPLAY_W*0.25, display.DISPLAY_H*0.7))
+        self.mask = pygame.mask.from_surface(self.image)
+        self.rect = self.mask.get_rect(center=(display_w*0.25, display_h*0.7))
         self.gravity = 0
 
     def event_handler(self, event, delta_tempo: float):
