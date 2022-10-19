@@ -10,6 +10,7 @@ from . import planet
 from . import boosts
 from . import display
 from . import time
+from . import argumentos
 
 
 def main():
@@ -138,7 +139,7 @@ def main():
             boost_speed = 4
             planet_speed = 6
         # Debug
-        if True:
+        if argumentos.DEBUG:
             from itertools import chain
             for sprite in chain(planet.PLANET_GROUP, player.PLAYER_GROUP, boosts.BOOST_GROUP):
                 if sprite.rect.collidepoint(pygame.mouse.get_pos()):
