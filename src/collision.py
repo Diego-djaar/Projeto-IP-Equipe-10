@@ -6,7 +6,7 @@ from . import boosts
 
 def collision_sprite():
     # Detectar colisão entre jogador e planetas
-    if pygame.sprite.spritecollide(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP, False):
+    if pygame.sprite.spritecollide(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP, False, pygame.sprite.collide_mask):
         planet.PLANET_GROUP.empty()
         player.GAME_ACTIVE = False
 
