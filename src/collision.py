@@ -1,3 +1,4 @@
+from typing import List, Tuple
 import pygame
 from pygame import sprite
 from pygame.sprite import Sprite
@@ -14,8 +15,11 @@ def collision_sprite(sprite_origem: Sprite, grupo: sprite.Group):
     return False
 
 
-def collision_group(grupo_origem: sprite.Group, grupo_destino: sprite.Group, action):
-    # Detectar colisão entre um grupo de sprites e outro grupo. Executar código para cada sprite de acordo
+def collision_group(grupo_origem: sprite.Group, grupo_destino: sprite.Group):
+    # Detectar colisão entre um grupo de sprites e outro grupo. Retornar todas as colisões detectadas
+    colisoes: List[Tuple[Sprite, Sprite]] = []
     for objeto in grupo_origem:
-        if pygame.sprite.spritecollide(objeto, grupo_destino, False, pygame.sprite.collide_mask):
-            action(objeto)
+        for outro in pygame.sprite.spritecollide(objeto, grupo_destino, False, pygame.sprite.collide_mask):
+            colisoes.append((objeto, outro))
+
+    return colisoes

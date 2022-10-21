@@ -153,7 +153,8 @@ def main():
             tiro.TIRO_GROUP.draw(display.DISPLAY)
 
             # Colisão entre tiro e planetas
-            collision_group(tiro.TIRO_GROUP, planet.PLANET_GROUP, pygame.sprite.Sprite.kill)
+            for (tiros, _) in collision_group(tiro.TIRO_GROUP, planet.PLANET_GROUP):
+                tiros.kill()
 
             # Detectar colisões (player/planetas)
             if collision_sprite(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP):
