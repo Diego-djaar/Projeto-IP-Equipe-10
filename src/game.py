@@ -152,8 +152,19 @@ def main():
             tiro.TIRO_GROUP.update()
             tiro.TIRO_GROUP.draw(display.DISPLAY)
 
-            # Detectar colisões (player/planetas e player/boosts)
-            collision_sprite()
+            # Detectar colisões (player/planetas)
+            if collision_sprite(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP):
+                # Bater num planeta
+                player.GAME_ACTIVE = False
+
+            # Detectar colisão entre jogador e os boosts
+            if collision_sprite(player.PLAYER_GROUP.sprite, boosts.BOOST_GROUP):
+                boost_types = pygame.sprite.spritecollide(player.PLAYER_GROUP.sprite, boosts.BOOST_GROUP, True)
+                for boost in boost_types:
+                    if boost.type in boosts.BOOSTS_COLETADOS_DICT:
+                        boosts.BOOSTS_COLETADOS_DICT[boost.type] += 1
+                    else:
+                        boosts.BOOSTS_COLETADOS_DICT[boost.type] = 1
         else:
             # Jogo inativo
             display.DISPLAY.fill('Purple')
