@@ -2,13 +2,14 @@ import pygame
 import sys
 import math
 from random import randint, choice
+from . import boosts
 from . import display
 from . import collision
 
 
 PLAYER_GROUP: pygame.sprite.GroupSingle
 GAME_ACTIVE: bool
-
+PROTEGIDO: bool
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -23,15 +24,15 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=(display.DISPLAY_W*0.25, display.DISPLAY_H*0.7))
         self.gravity = 0
         self.efeito_escudo = 0
-        self.escudo = False
 
     def event_handler(self, event, delta_tempo: float):
         pygame.key.set_repeat(80)
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
                 self.gravity -= 4*delta_tempo
-            if event.key == pygame.K_CAPSLOCK:
+            if event.key == pygame.K_CAPSLOCK and boosts.BOOSTS_COLETADOS_DICT["shield"] > 0:
                 self.efeito_escudo = 1000
+                boosts.BOOSTS_COLETADOS_DICT["shield"] -= 1
 
     def apply_gravity(self, delta_tempo: float):
         #global game_active
@@ -42,7 +43,7 @@ class Player(pygame.sprite.Sprite):
             current_module.GAME_ACTIVE = False
 
     def estado_animacao(self):
-        if self.escudo is True:
+        if self.efeito_escudo > 0:
             self.indx_anim = 1
         else:
             self.indx_anim = 0
@@ -53,7 +54,9 @@ class Player(pygame.sprite.Sprite):
         self.apply_gravity(delta_tempo)
         self.estado_animacao()
         if self.efeito_escudo > 0:
-            self.escudo = True
+            current_module = sys.modules[__name__]
+            current_module.PROTEGIDO = True
             self.efeito_escudo -= 4
         else:
-            self.escudo = False
+            current_module = sys.modules[__name__]
+            current_module.PROTEGIDO = False

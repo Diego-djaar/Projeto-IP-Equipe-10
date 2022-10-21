@@ -1,5 +1,4 @@
 import pygame
-
 from . import player
 from . import planet
 from . import boosts
@@ -7,9 +6,11 @@ from . import boosts
 
 def collision_sprite():
     #global game_active
-    if pygame.sprite.spritecollide(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP, False):
+    if pygame.sprite.spritecollide(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP, False) \
+            and player.PROTEGIDO is False:
         planet.PLANET_GROUP.empty()
         player.GAME_ACTIVE = False
+        print(f"(estado jogador: {player.PROTEGIDO})")
     # checa colisão entre o jogador e os boosts
     if pygame.sprite.spritecollideany(player.PLAYER_GROUP.sprite, boosts.BOOST_GROUP):
         boost_types = pygame.sprite.spritecollide(player.PLAYER_GROUP.sprite, boosts.BOOST_GROUP, True)
