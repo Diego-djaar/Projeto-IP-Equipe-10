@@ -12,6 +12,7 @@ PLAYER_GROUP: pygame.sprite.GroupSingle
 GAME_ACTIVE: bool
 PROTEGIDO: bool
 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -28,16 +29,9 @@ class Player(pygame.sprite.Sprite):
         self.efeito_escudo = 0
         self.tiro = tiro
 
-    def event_handler(self, event, delta_tempo: float):
+    def event_handler(self, _event, _delta_tempo: float):
         pygame.key.set_repeat(80)
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
-                self.gravity -= 4*delta_tempo
-            if event.key == pygame.K_CAPSLOCK and boosts.BOOSTS_COLETADOS_DICT["shield"] > 0:
-                self.efeito_escudo = 1000
-                boosts.BOOSTS_COLETADOS_DICT["shield"] -= 1
-            # Nada a fazer (movido)
-            pass
+        # Nada a fazer (movido)
 
     def apply_gravity(self, delta_tempo: float):
         # Cai para baixo
@@ -67,12 +61,16 @@ class Player(pygame.sprite.Sprite):
         if self.efeito_escudo > 0:
             current_module = sys.modules[__name__]
             current_module.PROTEGIDO = True
-            self.efeito_escudo -= 4
+            self.efeito_escudo -= 4*delta_tempo
         else:
             current_module = sys.modules[__name__]
             current_module.PROTEGIDO = False
 
         keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_CAPSLOCK] and boosts.BOOSTS_COLETADOS_DICT["shield"] > 0:
+            self.efeito_escudo = 1000
+            boosts.BOOSTS_COLETADOS_DICT["shield"] -= 1
 
         # Move para cima ao usar seta para cima
         if keys[pygame.K_UP]:
