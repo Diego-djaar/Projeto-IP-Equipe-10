@@ -1,7 +1,7 @@
 import pygame
 import sys
 import math
-from random import randint, choice
+from random import uniform, choice
 from . import display
 
 
@@ -39,7 +39,7 @@ class Planet(pygame.sprite.Sprite):
             # self.speed = 5
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.mask.get_rect(
-           midleft=(display.DISPLAY_W*1.5, randint(0, display.DISPLAY_H)))
+            midleft=(display.DISPLAY_W*1.5, uniform(0, display.DISPLAY_H)))
         self.gravity = 0
 
     def try_destroy(self):

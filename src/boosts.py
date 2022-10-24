@@ -44,11 +44,11 @@ class Boost(pygame.sprite.Sprite):
             self.image = pygame.transform.rotozoom(self.image, 0, 0.2)
 
         self.wave = randint(70, 100)
-        self.rect = self.image.get_rect(midleft=(display.DISPLAY_W*1.5, randint(display.DISPLAY_H*0.3, display.DISPLAY_H*0.7)))
+        self.rect = self.image.get_rect(midleft=(display.DISPLAY_W*1.5, uniform(display.DISPLAY_H*0.3, display.DISPLAY_H*0.7)))
         # Angulo entre 0 e 2pi
         self.angle = uniform(0, 6.2831)
         self.speed = speed
-        self.height = randint(display.DISPLAY_H*0.3, display.DISPLAY_H*0.7)
+        self.height = uniform(display.DISPLAY_H*0.3, display.DISPLAY_H*0.7)
 
     def movement(self, delta_tempo: float):
         # Movimento ondulatório
