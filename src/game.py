@@ -4,7 +4,7 @@ from random import randint, choice
 from .planet import Planet
 from .boosts import Boost, display_boosts
 from .score import display_score
-from .collision import collision_group, collision_sprite
+from .collision import collision_group_group, collision_sprite_group
 from .tiro import Tiro
 from . import player
 from . import planet
@@ -152,20 +152,19 @@ def main():
             tiro.TIRO_GROUP.update()
             tiro.TIRO_GROUP.draw(display.DISPLAY)
 
-            # Colisão entre tiro e planetas
-            for (tiros, _) in collision_group(tiro.TIRO_GROUP, planet.PLANET_GROUP):
+            # Colisões entre tiro e planetas
+            for (tiros, _) in collision_group_group(tiro.TIRO_GROUP, planet.PLANET_GROUP):
                 tiros.kill()
 
-            # Detectar colisões (player/planetas)
-            if collision_sprite(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP):
-                # Bater num planeta
+            # Detectar colisão entre jogador e algum planeta
+            if collision_sprite_group(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP):
+                # Bater num planeta qualquer
                 player.GAME_ACTIVE = False
 
-            # Detectar colisão entre jogador e os boosts
-            if collision_sprite(player.PLAYER_GROUP.sprite, boosts.BOOST_GROUP):
-                boost_types = pygame.sprite.spritecollide(player.PLAYER_GROUP.sprite, boosts.BOOST_GROUP, True)
-                for boost in boost_types:
-                    boosts.BOOSTS_COLETADOS_DICT[boost.type] += 1
+            # Colisões entre jogador e os boosts
+            for boost in collision_sprite_group(player.PLAYER_GROUP.sprite, boosts.BOOST_GROUP):
+                boosts.BOOSTS_COLETADOS_DICT[boost.type] += 1
+                boost.kill()
         else:
             # Jogo inativo
             display.DISPLAY.fill('Purple')
