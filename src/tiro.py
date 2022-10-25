@@ -6,7 +6,6 @@ from . import display
 TIRO_GROUP: pygame.sprite.Group
 TIRO_TIMER = 0
 TIRO_INTERVALO = 10
-TIRO_RECT_LIST = []
 TIRO_SPEED: int
 
 

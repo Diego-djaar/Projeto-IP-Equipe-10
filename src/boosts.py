@@ -7,7 +7,6 @@ from . import display
 
 BOOST_GROUP: pygame.sprite.GroupSingle
 BOOSTS_COLETADOS_DICT: dict
-BOOST_RECT_LIST = []
 BOOST_TIMER: int
 SHIELD_IMAGE: pygame.Surface = None
 SPEED_IMAGE: pygame.Surface = None
