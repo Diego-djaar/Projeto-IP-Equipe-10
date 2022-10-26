@@ -120,7 +120,7 @@ def main():
 
                 if event.type == boosts.BOOST_TIMER:
                     # Criar um boost aleatório
-                    boosts.BOOST_GROUP.add(boosts.Boost('slow', boosts.BOOST_SPEED_ATUAL))
+                    boosts.BOOST_GROUP.add(boosts.Boost(choice(['shield', 'speed', 'slow']), boosts.BOOST_SPEED_ATUAL))
                 
                 # Evento para ativar o boost do slow por 5s:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_c:
