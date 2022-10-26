@@ -32,7 +32,7 @@ def main():
     # Variáveis de jogo
     player.GAME_ACTIVE = False
     boosts.BOOSTS_COLETADOS_DICT = dict(shield=0, speed=0, slow=0)
-    desacelerar = False
+    boosts.DESACELERAR = False
 
     # Tempo
     time.CLOCK = pygame.time.Clock()
@@ -88,7 +88,7 @@ def main():
     # ------
 
     while True:
-        if desacelerar == False:
+        if boosts.DESACELERAR == False:
             delta_tempo = time.CLOCK.tick(100)*0.06
         else:
             delta_tempo = time.CLOCK.tick(100)*0.03
@@ -126,13 +126,13 @@ def main():
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_c:
                     if boosts.BOOSTS_COLETADOS_DICT['slow'] > 0:
                         boosts.BOOSTS_COLETADOS_DICT['slow'] -= 1
-                        desacelerar = True
+                        boosts.DESACELERAR = True
                         pygame.time.set_timer(slow_cancel, 5000)
                 
                 # Cancelar slow:
                 if event.type == slow_cancel:
                     pygame.time.set_timer(slow_cancel, 0)
-                    desacelerar = False
+                    boosts.DESACELERAR = False
 
             else:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:

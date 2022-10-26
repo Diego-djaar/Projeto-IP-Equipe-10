@@ -2,6 +2,8 @@ import pygame
 import sys
 import math
 from random import randint, choice
+
+from src import boosts
 from . import display
 from . import collision
 from .tiro import Tiro
@@ -57,7 +59,11 @@ class Player(pygame.sprite.Sprite):
 
         # Move para cima ao usar seta para cima
         if keys[pygame.K_UP]:
-            self.gravity -= 0.6*delta_tempo
+            if not boosts.DESACELERAR:
+                self.gravity -= 0.6*delta_tempo
+            else:
+                self.gravity -= 1.2*delta_tempo
+
 
         if keys[pygame.K_SPACE]:
             self.atirar()
