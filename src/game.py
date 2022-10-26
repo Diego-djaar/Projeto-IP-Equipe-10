@@ -40,6 +40,7 @@ def main():
     # Background
     display.GALAXY_SURF = pygame.image.load('graphics/background/galaxy.png').convert()
     display.GALAXY_SURF = pygame.transform.smoothscale(display.GALAXY_SURF, (display.DISPLAY_W, display.DISPLAY_H))
+    display.SCROLL = 0
 
     # Planetas
     planet.PLANET_TIMER = pygame.USEREVENT + 1
@@ -126,11 +127,16 @@ def main():
                     player.PLAYER_GROUP.sprite.gravity = 0
                     time.START_TIME = int(pygame.time.get_ticks() / 1000)
 
-        # Desenha o fundo galáctico
-        display.DISPLAY.blit(display.GALAXY_SURF, (0, 0))
+        
 
         if player.GAME_ACTIVE:
             # Ações a cada frame no jogo ativo
+            
+            # Desenha o fundo galáctico
+            for i in range(2):
+                display.DISPLAY.blit(display.GALAXY_SURF, (i * display.DISPLAY_W + display.SCROLL, 0))
+            display.SCROLL -= 3
+            if abs(display.SCROLL) > display.DISPLAY_W: display.SCROLL = 0
 
             # Player
             player.PLAYER_GROUP.update(delta_tempo)
