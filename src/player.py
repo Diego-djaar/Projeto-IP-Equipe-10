@@ -7,6 +7,7 @@ from . import collision
 from .tiro import Tiro
 from . import tiro
 from . import boosts
+from . import score
 
 PLAYER_GROUP: pygame.sprite.GroupSingle
 GAME_ACTIVE: bool
@@ -41,9 +42,12 @@ class Player(pygame.sprite.Sprite):
             # Morre ao sair do display
             current_module = sys.modules[__name__]
             current_module.GAME_ACTIVE = False
+            tiro.TIRO_GROUP.empty()
+
 
     def atirar(self):
-        if tiro.TIRO_TIMER <= 0:
+        tempo = score.display_score()
+        if tiro.TIRO_TIMER <= 0 and tempo >= 1:
             tiro.TIRO_GROUP.add(Tiro(self.rect.centerx + 100, self.rect.centery + 100))
             tiro.TIRO_TIMER = tiro.TIRO_INTERVALO
 

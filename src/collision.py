@@ -2,13 +2,14 @@ import pygame
 from . import player
 from . import planet
 from . import boosts
-
+from . import tiro
 
 def collision_sprite():
     # Detectar colisão entre jogador e planetas
     if pygame.sprite.spritecollide(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP, False, pygame.sprite.collide_mask)\
             and player.PROTEGIDO is False:
         planet.PLANET_GROUP.empty()
+        tiro.TIRO_GROUP.empty()
         player.GAME_ACTIVE = False
 
     # Detectar colisão entre jogador e os boosts

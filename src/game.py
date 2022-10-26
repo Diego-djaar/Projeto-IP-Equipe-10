@@ -120,6 +120,7 @@ def main():
                     player.GAME_ACTIVE = True
                     # Reiniciar variáveis
                     planet.PLANET_RECT_LIST.clear()
+                    tiro.TIRO_RECT_LIST.clear()
                     boosts.BOOST_RECT_LIST.clear()
                     boosts.BOOSTS_COLETADOS_DICT = dict(shield=0, speed=0, slow=0)
                     player.PLAYER_GROUP.sprite.rect.y = display.DISPLAY_H*0.6
