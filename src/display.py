@@ -4,5 +4,6 @@ import pygame
 DISPLAY: pygame.Surface
 DISPLAY_W: int
 DISPLAY_H: int
+SCROLL: int
 FONT: pygame.font.Font
 GALAXY_SURF: pygame.Surface
