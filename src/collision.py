@@ -1,20 +1,25 @@
+from typing import List, Tuple
 import pygame
+from pygame import sprite
+from pygame.sprite import Sprite
 from . import player
 from . import planet
 from . import boosts
 
 
-def collision_sprite():
-    # Detectar colisão entre jogador e planetas
-    if pygame.sprite.spritecollide(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP, False, pygame.sprite.collide_mask):
-        planet.PLANET_GROUP.empty()
-        player.GAME_ACTIVE = False
+def collision_sprite_group(sprite_origem: Sprite, grupo: sprite.Group):
+    # Detectar colisões entre um sprite e um grupo de sprites.
+    # Retornar colisões detectadas
+    colisoes: List[Sprite] = pygame.sprite.spritecollide(sprite_origem, grupo, False, pygame.sprite.collide_mask)
+    return colisoes
 
-    # Detectar colisão entre jogador e os boosts
-    if pygame.sprite.spritecollideany(player.PLAYER_GROUP.sprite, boosts.BOOST_GROUP):
-        boost_types = pygame.sprite.spritecollide(player.PLAYER_GROUP.sprite, boosts.BOOST_GROUP, True)
-        for sprite in boost_types:
-            if sprite.type in boosts.BOOSTS_COLETADOS_DICT:
-                boosts.BOOSTS_COLETADOS_DICT[sprite.type] += 1
-            else:
-                boosts.BOOSTS_COLETADOS_DICT[sprite.type] = 1
+
+def collision_group_group(grupo_origem: sprite.Group, grupo_destino: sprite.Group):
+    # Detectar colisões entre um grupo de sprites e outro grupo.
+    # Retornar todas as colisões detectadas, 1 para 1
+    colisoes: List[Tuple[Sprite, Sprite]] = []
+    for objeto in grupo_origem:
+        for outro in pygame.sprite.spritecollide(objeto, grupo_destino, False, pygame.sprite.collide_mask):
+            colisoes.append((objeto, outro))
+
+    return colisoes
