@@ -13,7 +13,7 @@ class Tiro(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
 
-        self.image = pygame.image.load('sprites/tiro.png')
+        self.image = pygame.image.load('graphics/tiro/tiro.png')
         self.rect = self.image.get_rect(center=(x, y))
 
         # ALTERAÇÕES
