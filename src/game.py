@@ -4,7 +4,7 @@ from random import randint, choice
 from .planet import Planet
 from .boosts import Boost, display_boosts
 from .score import display_score
-from .collision import collision_sprite
+from .collision import collision_group_group, collision_sprite_group
 from .tiro import Tiro
 from . import player
 from . import planet
@@ -152,8 +152,19 @@ def main():
             tiro.TIRO_GROUP.update()
             tiro.TIRO_GROUP.draw(display.DISPLAY)
 
-            # Detectar colisões (player/planetas e player/boosts)
-            collision_sprite()
+            # Colisões entre tiro e planetas
+            for (tiros, _) in collision_group_group(tiro.TIRO_GROUP, planet.PLANET_GROUP):
+                tiros.kill()
+
+            # Detectar colisão entre jogador e algum planeta
+            if collision_sprite_group(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP):
+                # Bater num planeta qualquer
+                player.GAME_ACTIVE = False
+
+            # Colisões entre jogador e os boosts
+            for boost in collision_sprite_group(player.PLAYER_GROUP.sprite, boosts.BOOST_GROUP):
+                boosts.BOOSTS_COLETADOS_DICT[boost.type] += 1
+                boost.kill()
         else:
             # Jogo inativo
             display.DISPLAY.fill('Purple')
