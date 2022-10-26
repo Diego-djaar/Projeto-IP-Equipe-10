@@ -35,19 +35,10 @@ class Player(pygame.sprite.Sprite):
             # Morre ao sair do display
             current_module = sys.modules[__name__]
             current_module.GAME_ACTIVE = False
-        # ALTERAÇÕES
-        # retorna largura e altura da imagem
-        # self.size = self.image.get_size() # isso não faz nada
-        # ajusta tamanho do sprite
-        #self.image = pygame.transform.scale(self.image, (int(self.size[0] * 0.7), int(self.size[1] * 0.7)))
-        #self.image = pygame.transform.scale(self.image, (120, 80))
-        # ajusta rect também (que não tava acompanhando ajuste de tamanho de 'image')
-        #self.rect = self.image.get_rect()
-        #self.rect = self.rect.inflate(160, 160)
 
     def atirar(self):
         if tiro.TIRO_TIMER <= 0:
-            tiro.TIRO_GROUP.add(Tiro(self.rect.centerx + 100, self.rect.centery + 100))
+            tiro.TIRO_GROUP.add(Tiro(self.rect.midright[0] + 100, self.rect.midright[1] + 94))
             tiro.TIRO_TIMER = tiro.TIRO_INTERVALO
 
     def update(self, delta_tempo: float):
