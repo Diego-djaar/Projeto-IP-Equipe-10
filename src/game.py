@@ -37,9 +37,9 @@ def main():
     time.CLOCK = pygame.time.Clock()
     time.START_TIME = 0
 
-    # Fundo
+    # Background
     display.GALAXY_SURF = pygame.image.load('graphics/background/galaxy.png').convert()
-    display.GALAXY_SURF = pygame.transform.rotozoom(display.GALAXY_SURF, 0, 0.8)
+    display.GALAXY_SURF = pygame.transform.smoothscale(display.GALAXY_SURF, (display.DISPLAY_W, display.DISPLAY_H))
 
     # Planetas
     planet.PLANET_TIMER = pygame.USEREVENT + 1
