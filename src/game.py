@@ -2,7 +2,7 @@ import pygame
 import sys
 from random import randint, choice
 from .planet import Planet
-from .boosts import Boost, display_boosts
+from . import boosts
 from .score import display_score
 from .collision import collision_sprite
 from .tiro import Tiro
@@ -32,6 +32,7 @@ def main():
     # Variáveis de jogo
     player.GAME_ACTIVE = False
     boosts.BOOSTS_COLETADOS_DICT = dict(shield=0, speed=0, slow=0)
+    desacelerar = False
 
     # Tempo
     time.CLOCK = pygame.time.Clock()
@@ -72,6 +73,9 @@ def main():
     pygame.time.set_timer(tiro.TIRO_SPEED, 4000)
     tiro.TIRO_RECT_LIST = []
 
+    # Boost de slow:
+    slow_cancel = pygame.USEREVENT + 6
+
     if argumentos.DEBUG:
         mouse_pos = pygame.sprite.Sprite()
         mouse_pos.image = pygame.image.load('./graphics/planet/planet_1.png').convert_alpha()
@@ -84,7 +88,10 @@ def main():
     # ------
 
     while True:
-        delta_tempo = time.CLOCK.tick(100)*0.06
+        if desacelerar == False:
+            delta_tempo = time.CLOCK.tick(100)*0.06
+        else:
+            delta_tempo = time.CLOCK.tick(100)*0.03
 
         for event in pygame.event.get():
             # Eventos
@@ -113,7 +120,20 @@ def main():
 
                 if event.type == boosts.BOOST_TIMER:
                     # Criar um boost aleatório
-                    boosts.BOOST_GROUP.add(Boost(choice(['shield', 'speed', 'slow']), boosts.BOOST_SPEED_ATUAL))
+                    boosts.BOOST_GROUP.add(boosts.Boost('slow', boosts.BOOST_SPEED_ATUAL))
+                
+                # Evento para ativar o boost do slow por 5s:
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_c:
+                    if boosts.BOOSTS_COLETADOS_DICT['slow'] > 0:
+                        boosts.BOOSTS_COLETADOS_DICT['slow'] -= 1
+                        desacelerar = True
+                        pygame.time.set_timer(slow_cancel, 5000)
+                
+                # Cancelar slow:
+                if event.type == slow_cancel:
+                    pygame.time.set_timer(slow_cancel, 0)
+                    desacelerar = False
+
             else:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     # (Re)começar o jogo
@@ -146,7 +166,7 @@ def main():
 
             # Display (score e boosts)
             display_score()
-            display_boosts(boosts.BOOSTS_COLETADOS_DICT)
+            boosts.display_boosts(boosts.BOOSTS_COLETADOS_DICT)
 
             # Tiros
             tiro.TIRO_GROUP.update()
