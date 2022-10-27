@@ -136,6 +136,10 @@ def main():
                         for boost in boosts.BOOST_GROUP:
                             boost.image = boost.image_dir['cinza']
 
+                        # Alterar imagens dos planetas
+                        for planeta in planet.PLANET_GROUP:
+                            planeta.image = planeta.image_dir['cinza']
+
                         pygame.time.set_timer(slow_cancel, 5000)
 
                 # Cancelar slow:
@@ -143,6 +147,10 @@ def main():
                     # Alterar imagens dos boosts
                     for boost in boosts.BOOST_GROUP:
                         boost.image = boost.image_dir['normal']
+
+                    # Alterar imagens dos planetas
+                    for planeta in planet.PLANET_GROUP:
+                        planeta.image = planeta.image_dir['normal']
 
                     pygame.time.set_timer(slow_cancel, 0)
                     boosts.DESACELERAR = False
