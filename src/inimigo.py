@@ -32,30 +32,34 @@ class Inimigo(pygame.sprite.Sprite):
         self.rect = self.mask.get_rect(
             midleft=(display.DISPLAY_W*1.5, uniform(0, display.DISPLAY_H)))
         self.gravity = 0
-        self.tod = 0
+        self.atingido = False
+        # hora de morte
+        self.hm = 0
 
     def check_collision(self):
-        if len(collision.collision_sprite_group(self, tiro.TIRO_GROUP)) > 0:
-            return True
-
-    def hora_morte(self):
-        self.tod = pygame.time.get_ticks() + 300
+        if len(collision.collision_sprite_group(self, tiro.TIRO_GROUP)) > 0 and self.atingido is False:
+            self.atingido = True
+            self.hm = pygame.time.get_ticks() + 140
 
     def aproximar(self):
         if self.rect.y < player.PLAYER_GROUP.sprite.rect.y:
-            self.rect.y += 2
+            self.rect.y += 1.5
         elif self.rect.y > player.PLAYER_GROUP.sprite.rect.y:
-            self.rect.y -= 2
+            self.rect.y -= 1.5
 
     def explodir(self):
         self.image = self.animacao[1]
-        self.image = pygame.transform.rotozoom(self.image, 0, 0.5)
-        self.hora_morte()
+        self.image = pygame.transform.rotozoom(self.image, 0, 0.4)
+        agora = pygame.time.get_ticks()
+        if agora > self.hm:
+            self.kill()
 
     def try_destroy(self):
         if self.rect.x < -1000:
             self.kill()
-        elif self.check_collision() and self.interromper is True:
+        elif self.atingido is True:
+            self.explodir()
+
 
 
     def movement(self, delta_tempo: float):
