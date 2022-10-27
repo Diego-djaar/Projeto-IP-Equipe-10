@@ -60,8 +60,6 @@ class Inimigo(pygame.sprite.Sprite):
         elif self.atingido is True:
             self.explodir()
 
-
-
     def movement(self, delta_tempo: float):
         self.rect.x -= self.speed*delta_tempo
 
@@ -70,3 +68,4 @@ class Inimigo(pygame.sprite.Sprite):
         self.try_destroy()
         self.aproximar()
         self.check_collision()
+

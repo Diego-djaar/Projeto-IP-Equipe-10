@@ -44,17 +44,17 @@ def main():
 
     # Planetas
     planet.PLANET_TIMER = pygame.USEREVENT + 1
-    pygame.time.set_timer(planet.PLANET_TIMER, 3000)
+    pygame.time.set_timer(planet.PLANET_TIMER, 4000)
     planet.PLANET_GROUP = pygame.sprite.Group()
 
     # Asteroides
     asteroide.ASTEROIDE_TIMER = pygame.USEREVENT + 6
-    pygame.time.set_timer(asteroide.ASTEROIDE_TIMER, 2000)
+    pygame.time.set_timer(asteroide.ASTEROIDE_TIMER, 3000)
     asteroide.ASTEROIDE_GROUP = pygame.sprite.Group()
 
     # inimigos
     inimigo.INIMIGO_TIMER = pygame.USEREVENT + 7
-    pygame.time.set_timer(inimigo.INIMIGO_TIMER, 2000)
+    pygame.time.set_timer(inimigo.INIMIGO_TIMER, 4000)
     inimigo.INIMIGO_GROUP = pygame.sprite.Group()
 
     # Boosts
@@ -186,7 +186,6 @@ def main():
             # Colisões entre tiro e inimigo
             for (tiros, inimigos) in collision_group_group(tiro.TIRO_GROUP, inimigo.INIMIGO_GROUP):
                 tiros.kill()
-
 
             # Detectar colisão entre jogador e algum planeta
             if collision_sprite_group(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP):
