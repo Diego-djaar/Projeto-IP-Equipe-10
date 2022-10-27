@@ -44,7 +44,6 @@ class Player(pygame.sprite.Sprite):
             current_module.GAME_ACTIVE = False
             tiro.TIRO_GROUP.empty()
 
-
     def atirar(self):
         tempo = score.display_score()
         if tiro.TIRO_TIMER <= 0 and tempo >= 1:
@@ -72,7 +71,8 @@ class Player(pygame.sprite.Sprite):
 
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_CAPSLOCK] and boosts.BOOSTS_COLETADOS_DICT["shield"] > 0:
+        current_module = sys.modules[__name__]
+        if keys[pygame.K_x] and boosts.BOOSTS_COLETADOS_DICT["shield"] > 0 and not current_module.PROTEGIDO:
             self.efeito_escudo = 1000
             boosts.BOOSTS_COLETADOS_DICT["shield"] -= 1
 
