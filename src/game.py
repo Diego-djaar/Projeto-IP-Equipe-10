@@ -126,21 +126,20 @@ def main():
                     # Criar um boost aleatório
                     boosts.BOOST_GROUP.add(boosts.Boost(choice(['shield', 'speed', 'slow']), boosts.BOOST_SPEED_ATUAL))
 
-                # Evento para ativar o boost do slow por 5s:
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_c:
-                    if boosts.BOOSTS_COLETADOS_DICT['slow'] > 0:
-                        boosts.BOOSTS_COLETADOS_DICT['slow'] -= 1
-                        boosts.DESACELERAR = True
+                # Ativar o boost do slow:
+                if pygame.key.get_pressed()[pygame.K_c] and boosts.BOOSTS_COLETADOS_DICT["slow"] > 0 and not boosts.DESACELERAR:
+                    boosts.BOOSTS_COLETADOS_DICT['slow'] -= 1
+                    boosts.DESACELERAR = True
 
-                        # Alterar imagens dos boosts
-                        for boost in boosts.BOOST_GROUP:
-                            boost.image = boost.image_dir['cinza']
+                    # Alterar imagens dos boosts
+                    for boost in boosts.BOOST_GROUP:
+                        boost.image = boost.image_dir['cinza']
 
-                        # Alterar imagens dos planetas
-                        for planeta in planet.PLANET_GROUP:
-                            planeta.image = planeta.image_dir['cinza']
+                    # Alterar imagens dos planetas
+                    for planeta in planet.PLANET_GROUP:
+                        planeta.image = planeta.image_dir['cinza']
 
-                        pygame.time.set_timer(slow_cancel, 5000)
+                    pygame.time.set_timer(slow_cancel, 5000)
 
                 # Cancelar slow:
                 if event.type == slow_cancel:
@@ -161,6 +160,7 @@ def main():
                     player.GAME_ACTIVE = True
                     # Reiniciar variáveis
                     planet.PLANET_RECT_LIST.clear()
+                    tiro.TIRO_RECT_LIST.clear()
                     boosts.BOOST_RECT_LIST.clear()
                     boosts.BOOSTS_COLETADOS_DICT = dict(shield=0, speed=0, slow=0)
                     player.PLAYER_GROUP.sprite.rect.y = display.DISPLAY_H*0.6
@@ -204,7 +204,8 @@ def main():
                 tiros.kill()
 
             # Detectar colisão entre jogador e algum planeta
-            if collision_sprite_group(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP):
+            if collision_sprite_group(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP)\
+                    and player.PROTEGIDO is False:
                 # Bater num planeta qualquer
                 player.GAME_ACTIVE = False
 
@@ -217,6 +218,7 @@ def main():
             display.DISPLAY.fill('Purple')
             planet.PLANET_GROUP.empty()
             boosts.BOOST_GROUP.empty()
+            tiro.TIRO_GROUP.empty()
 
             # Reset da velocidade dos objetos:
             boosts.BOOST_SPEED_ATUAL = boosts.BOOST_SPEED_BASE

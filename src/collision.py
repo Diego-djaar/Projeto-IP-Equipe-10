@@ -5,6 +5,7 @@ from pygame.sprite import Sprite
 from . import player
 from . import planet
 from . import boosts
+from . import tiro
 
 
 def collision_sprite_group(sprite_origem: Sprite, grupo: sprite.Group):
