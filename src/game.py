@@ -32,7 +32,7 @@ def main():
     # Variáveis de jogo
     player.GAME_MODE = 'normal'
     player.GAME_ACTIVE = False
-    boosts.BOOSTS_COLETADOS_DICT = dict(shield=0, speed=0, slow=0)
+    boosts.BOOSTS_COLETADOS_DICT = dict(shield=0, slow=0)
     boosts.DESACELERAR = False
 
     # Tempo
@@ -132,7 +132,7 @@ def main():
 
                 if event.type == boosts.BOOST_TIMER:
                     # Criar um boost aleatório
-                    boosts.BOOST_GROUP.add(boosts.Boost(choice(['shield', 'speed', 'slow']), boosts.BOOST_SPEED_ATUAL))
+                    boosts.BOOST_GROUP.add(boosts.Boost(choice(['shield', 'slow']), boosts.BOOST_SPEED_ATUAL))
 
                 # Ativar o boost do slow:
                 if pygame.key.get_pressed()[pygame.K_c] and boosts.BOOSTS_COLETADOS_DICT["slow"] > 0 and not boosts.DESACELERAR:
@@ -167,7 +167,7 @@ def main():
                     # (Re)começar o jogo
                     player.GAME_ACTIVE = True
                     # Reiniciar variáveis
-                    boosts.BOOSTS_COLETADOS_DICT = dict(shield=0, speed=0, slow=0)
+                    boosts.BOOSTS_COLETADOS_DICT = dict(shield=0, slow=0)
                     player.PLAYER_GROUP.sprite.rect.y = display.DISPLAY_H*0.6
                     player.PLAYER_GROUP.sprite.gravity = 0
                     time.START_TIME = int(pygame.time.get_ticks() / 1000)
