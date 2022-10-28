@@ -8,7 +8,6 @@ from . import display
 
 BOOST_GROUP: pygame.sprite.Group
 BOOSTS_COLETADOS_DICT: dict
-BOOST_RECT_LIST = []
 BOOST_TIMER: int
 SHIELD_IMAGE: dict = None
 SPEED_IMAGE: dict = None

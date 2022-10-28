@@ -8,7 +8,6 @@ from . import player
 
 PLANET_GROUP: pygame.sprite.Group
 PLANET_TIMER: int
-PLANET_RECT_LIST = []
 PLANET_0_IMAGE: dict = None
 PLANET_1_IMAGE: dict = None
 PLANET_SPEED_EVENT: int
