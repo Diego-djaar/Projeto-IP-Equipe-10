@@ -126,21 +126,20 @@ def main():
                     # Criar um boost aleatório
                     boosts.BOOST_GROUP.add(boosts.Boost(choice(['shield', 'speed', 'slow']), boosts.BOOST_SPEED_ATUAL))
 
-                # Evento para ativar o boost do slow por 5s:
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_c:
-                    if boosts.BOOSTS_COLETADOS_DICT['slow'] > 0:
-                        boosts.BOOSTS_COLETADOS_DICT['slow'] -= 1
-                        boosts.DESACELERAR = True
+                # Ativar o boost do slow:
+                if pygame.key.get_pressed()[pygame.K_c] and boosts.BOOSTS_COLETADOS_DICT["slow"] > 0 and not boosts.DESACELERAR:
+                    boosts.BOOSTS_COLETADOS_DICT['slow'] -= 1
+                    boosts.DESACELERAR = True
 
-                        # Alterar imagens dos boosts
-                        for boost in boosts.BOOST_GROUP:
-                            boost.image = boost.image_dir['cinza']
+                    # Alterar imagens dos boosts
+                    for boost in boosts.BOOST_GROUP:
+                        boost.image = boost.image_dir['cinza']
 
-                        # Alterar imagens dos planetas
-                        for planeta in planet.PLANET_GROUP:
-                            planeta.image = planeta.image_dir['cinza']
+                    # Alterar imagens dos planetas
+                    for planeta in planet.PLANET_GROUP:
+                        planeta.image = planeta.image_dir['cinza']
 
-                        pygame.time.set_timer(slow_cancel, 5000)
+                    pygame.time.set_timer(slow_cancel, 5000)
 
                 # Cancelar slow:
                 if event.type == slow_cancel:

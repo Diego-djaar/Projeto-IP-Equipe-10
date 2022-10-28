@@ -73,7 +73,7 @@ class Player(pygame.sprite.Sprite):
         if self.efeito_escudo > 0:
             current_module = sys.modules[__name__]
             current_module.PROTEGIDO = True
-            self.efeito_escudo -= 4*delta_tempo
+            self.efeito_escudo -= delta_tempo
         else:
             current_module = sys.modules[__name__]
             current_module.PROTEGIDO = False
@@ -82,7 +82,7 @@ class Player(pygame.sprite.Sprite):
 
         current_module = sys.modules[__name__]
         if keys[pygame.K_x] and boosts.BOOSTS_COLETADOS_DICT["shield"] > 0 and not current_module.PROTEGIDO:
-            self.efeito_escudo = 1000
+            self.efeito_escudo = 300
             boosts.BOOSTS_COLETADOS_DICT["shield"] -= 1
 
         # Move para cima ao usar seta para cima
