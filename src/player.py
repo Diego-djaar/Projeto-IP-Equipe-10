@@ -2,6 +2,8 @@ import pygame
 import sys
 import math
 from random import randint, choice
+
+from src import boosts
 from . import display
 from . import collision
 from .tiro import Tiro
@@ -9,6 +11,7 @@ from . import tiro
 
 PLAYER_GROUP: pygame.sprite.GroupSingle
 GAME_ACTIVE: bool
+GAME_MODE: str = 'normal'
 
 
 class Player(pygame.sprite.Sprite):
@@ -21,7 +24,7 @@ class Player(pygame.sprite.Sprite):
         self.gravity = 0
         self.tiro = tiro
 
-    def event_handler(self, event, delta_tempo: float):
+    def event_handler(self, event, _delta_tempo: float):
         pygame.key.set_repeat(80)
         if event.type == pygame.KEYDOWN:
             # Nada a fazer (movido)
@@ -51,13 +54,21 @@ class Player(pygame.sprite.Sprite):
             tiro.TIRO_TIMER = tiro.TIRO_INTERVALO
 
     def update(self, delta_tempo: float):
-        self.apply_gravity(delta_tempo)
+        if not boosts.DESACELERAR:
+            self.apply_gravity(delta_tempo)
+        else:
+            # Não ser afetado pelo boost
+            self.apply_gravity(delta_tempo*2)
 
         keys = pygame.key.get_pressed()
 
         # Move para cima ao usar seta para cima
         if keys[pygame.K_UP]:
-            self.gravity -= 0.6*delta_tempo
+            if not boosts.DESACELERAR:
+                self.gravity -= 0.6*delta_tempo
+            else:
+                # Não ser afetado pelo boost
+                self.gravity -= 1.2*delta_tempo
 
         if keys[pygame.K_SPACE]:
             self.atirar()
