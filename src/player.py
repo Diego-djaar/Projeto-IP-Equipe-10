@@ -3,7 +3,7 @@ import sys
 import math
 from random import randint, choice
 
-from src import boosts
+from . import boosts
 from . import display
 from . import collision
 from .tiro import Tiro
@@ -32,6 +32,10 @@ class Player(pygame.sprite.Sprite):
         self.gravity = 0
         self.efeito_escudo = 0
         self.tiro = tiro
+        # timestamp ultimo disparo
+        self.last = pygame.time.get_ticks()
+        # cooldown tiro em milisegundos
+        self.cooldown = 800
 
     def event_handler(self, _event, _delta_tempo: float):
         pygame.key.set_repeat(80)
@@ -49,9 +53,13 @@ class Player(pygame.sprite.Sprite):
 
     def atirar(self):
         tempo = score.display_score()
+        agr = pygame.time.get_ticks()
+        # condicional: espera 1 segundo após início do jogo pra abrir
         if tiro.TIRO_TIMER <= 0 and tempo >= 1:
-            tiro.TIRO_GROUP.add(Tiro(self.rect.centerx + 100, self.rect.centery + 100))
-            tiro.TIRO_TIMER = tiro.TIRO_INTERVALO
+            if agr - self.last >= self.cooldown:
+                self.last = agr
+                tiro.TIRO_GROUP.add(Tiro(self.rect.centerx + 100, self.rect.centery + 100))
+                tiro.TIRO_TIMER = tiro.TIRO_INTERVALO
 
     def estado_animacao(self):
         if self.efeito_escudo > 0:
