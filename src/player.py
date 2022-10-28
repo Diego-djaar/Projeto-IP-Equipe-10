@@ -22,7 +22,8 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         jogador_padrao = pygame.image.load('graphics/player/player_0.png').convert_alpha()
         jogador_escudo = pygame.image.load('graphics/player/player_azul.png').convert_alpha()
-        self.animacao = [jogador_padrao, jogador_escudo]
+        jogador_speed = pygame.image.load('graphics/player/player_speed.png').convert_alpha()
+        self.animacao = [jogador_padrao, jogador_escudo, jogador_speed]
         self.indx_anim = 0
 
         self.image = self.animacao[self.indx_anim]
@@ -39,8 +40,10 @@ class Player(pygame.sprite.Sprite):
 
     def apply_gravity(self, delta_tempo: float):
         # Cai para baixo
-        self.gravity += 0.25*delta_tempo
-        self.rect.y += self.gravity*delta_tempo
+        if not boosts.HYPERSPEED:
+            self.gravity += 0.25*delta_tempo
+            self.rect.y += self.gravity*delta_tempo
+            
         if self.rect.top > display.DISPLAY_H+200 or self.rect.bottom < -200:
             # Morre ao sair do display
             current_module = sys.modules[__name__]
@@ -56,6 +59,10 @@ class Player(pygame.sprite.Sprite):
     def estado_animacao(self):
         if self.efeito_escudo > 0:
             self.indx_anim = 1
+        
+        elif boosts.HYPERSPEED:
+            self.indx_anim = 2
+
         else:
             self.indx_anim = 0
         self.image = self.animacao[self.indx_anim]
@@ -87,11 +94,12 @@ class Player(pygame.sprite.Sprite):
 
         # Move para cima ao usar seta para cima
         if keys[pygame.K_UP]:
-            if not boosts.DESACELERAR:
-                self.gravity -= 0.6*delta_tempo
-            else:
-                # Não ser afetado pelo boost
-                self.gravity -= 1.2*delta_tempo
+            if not boosts.HYPERSPEED:
+                if not boosts.DESACELERAR:
+                    self.gravity -= 0.6*delta_tempo
+                else:
+                    # Não ser afetado pelo boost
+                    self.gravity -= 1.2*delta_tempo
 
         if keys[pygame.K_SPACE]:
             self.atirar()

@@ -16,6 +16,7 @@ BOOST_SPEED_EVENT: int
 BOOST_SPEED_BASE = 4
 BOOST_SPEED_ATUAL = 4
 DESACELERAR = False
+HYPERSPEED = False
 
 
 class Boost(pygame.sprite.Sprite):

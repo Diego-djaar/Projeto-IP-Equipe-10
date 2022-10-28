@@ -84,6 +84,9 @@ def main():
     # Boost de slow:
     slow_cancel = pygame.USEREVENT + 7
 
+    # Boost de speed:
+    speed_cancel = pygame.USEREVENT + 8
+
     if argumentos.DEBUG:
         mouse_pos = pygame.sprite.Sprite()
         mouse_pos.image = pygame.image.load('./graphics/planet/planet_1.png').convert_alpha()
@@ -96,10 +99,14 @@ def main():
     # ------
 
     while True:
-        if not boosts.DESACELERAR:
-            delta_tempo = time.CLOCK.tick(100)*0.06
-        else:
+        if boosts.DESACELERAR:
             delta_tempo = time.CLOCK.tick(100)*0.03
+        
+        elif boosts.HYPERSPEED:
+            delta_tempo = time.CLOCK.tick(100)*1.00
+
+        else:
+            delta_tempo = time.CLOCK.tick(100)*0.06
 
         # Eventos
         for event in pygame.event.get():
@@ -161,6 +168,18 @@ def main():
 
                     pygame.time.set_timer(slow_cancel, 0)
                     boosts.DESACELERAR = False
+                
+                if pygame.key.get_pressed()[pygame.K_z] and boosts.BOOSTS_COLETADOS_DICT["speed"] > 0:
+                    boosts.BOOSTS_COLETADOS_DICT['speed'] -= 1
+                    boosts.HYPERSPEED = True
+
+                    pygame.time.set_timer(speed_cancel, 5000)
+
+                if event.type == speed_cancel:
+                    pygame.time.set_timer(speed_cancel, 0)
+                    boosts.HYPERSPEED = False
+                
+
 
             else:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
@@ -219,15 +238,23 @@ def main():
 
             # Detectar colisão entre jogador e algum planeta
             if collision_sprite_group(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP)\
-                    and player.PROTEGIDO is False:
+                    and player.PROTEGIDO is False and boosts.HYPERSPEED is False:
                 # Bater num planeta qualquer
                 player.GAME_ACTIVE = False
 
             # Detectar colisão entre jogador e algum asteroide
             if collision_sprite_group(player.PLAYER_GROUP.sprite, asteroide.ASTEROIDE_GROUP)\
-                    and player.PROTEGIDO is False:
+                    and player.PROTEGIDO is False and boosts.HYPERSPEED is False:
                 # Bater num asteroide qualquer
                 player.GAME_ACTIVE = False
+            
+            # Detectar colisão entre jogador e planeta e destruir planeta se hyperspeed
+            for planeta in collision_sprite_group(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP):
+                planeta.kill()
+            
+            # Detectar colisão entre jogador e asteroides e destruir asteroides se hyperspeed
+            for asteroides in collision_sprite_group(player.PLAYER_GROUP.sprite, asteroide.ASTEROIDE_GROUP):
+                asteroides.kill()
 
             # Colisões entre jogador e os boosts
             for boost in collision_sprite_group(player.PLAYER_GROUP.sprite, boosts.BOOST_GROUP):
@@ -244,6 +271,7 @@ def main():
             # Reset da velocidade dos objetos:
             boosts.BOOST_SPEED_ATUAL = boosts.BOOST_SPEED_BASE
             planet.PLANET_SPEED_ATUAL = planet.PLANET_SPEED_BASE
+            boosts.DESACELERAR = False
 
         # Debug
         if argumentos.DEBUG:
