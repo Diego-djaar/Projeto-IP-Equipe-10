@@ -2,6 +2,8 @@ import pygame
 import sys
 import math
 from random import randint, choice
+
+from src import boosts
 from . import display
 from . import collision
 from .tiro import Tiro
@@ -11,6 +13,7 @@ from . import score
 
 PLAYER_GROUP: pygame.sprite.GroupSingle
 GAME_ACTIVE: bool
+GAME_MODE: str = 'normal'
 PROTEGIDO: bool
 
 
@@ -59,8 +62,14 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.transform.rotozoom(self.image, 0, 0.35)
 
     def update(self, delta_tempo: float):
-        self.apply_gravity(delta_tempo)
+        if not boosts.DESACELERAR:
+            self.apply_gravity(delta_tempo)
+        else:
+            # Não ser afetado pelo boost
+            self.apply_gravity(delta_tempo*2)
+
         self.estado_animacao()
+
         if self.efeito_escudo > 0:
             current_module = sys.modules[__name__]
             current_module.PROTEGIDO = True
@@ -78,7 +87,11 @@ class Player(pygame.sprite.Sprite):
 
         # Move para cima ao usar seta para cima
         if keys[pygame.K_UP]:
-            self.gravity -= 0.6*delta_tempo
+            if not boosts.DESACELERAR:
+                self.gravity -= 0.6*delta_tempo
+            else:
+                # Não ser afetado pelo boost
+                self.gravity -= 1.2*delta_tempo
 
         if keys[pygame.K_SPACE]:
             self.atirar()
