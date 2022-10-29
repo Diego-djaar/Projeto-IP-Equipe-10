@@ -83,7 +83,7 @@ def main():
     eventos.EVENTOS_LISTA_DICT['cancelar slow'] = eventos.Evento('cancelar slow', -1, -1, 150, True)
 
     # Boost de speed:
-    speed_cancel = pygame.USEREVENT + 8
+    eventos.EVENTOS_LISTA_DICT['cancelar speed'] = eventos.Evento('cancelar speed', -1, -1, 500, True)
 
     if argumentos.DEBUG:
         mouse_pos = pygame.sprite.Sprite()
@@ -127,10 +127,6 @@ def main():
                     player.PLAYER_GROUP.sprite.rect.y = display.DISPLAY_H*0.6
                     player.PLAYER_GROUP.sprite.gravity = 0
                     time.START_TIME = int(pygame.time.get_ticks() / 1000)
-
-            if event.type == speed_cancel:
-                pygame.time.set_timer(speed_cancel, 0)
-                boosts.HYPERSPEED = False
 
         # ------
         # EVENTOS DEFINIDOS
@@ -184,6 +180,11 @@ def main():
                         evento.travar()
                         boosts.DESACELERAR = False
 
+                    # Cancelar speed
+                    if evento_tipo == 'cancelar speed':
+                        evento.travar()
+                        boosts.HYPERSPEED = False
+
         # ------
         # AÇÕES A CADA FRAME
         # ------
@@ -211,7 +212,8 @@ def main():
                 boosts.BOOSTS_COLETADOS_DICT['speed'] -= 1
                 boosts.HYPERSPEED = True
 
-                pygame.time.set_timer(speed_cancel, 5000)
+                evento_speed = eventos.EVENTOS_LISTA_DICT['cancelar speed']
+                evento_speed.reiniciar()
 
             # Tornar tela cinza se boost de slow.
             if boosts.DESACELERAR:
