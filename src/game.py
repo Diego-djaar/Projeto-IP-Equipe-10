@@ -57,8 +57,7 @@ def main():
     planet.PLANET_GROUP = pygame.sprite.Group()
 
     # Asteroides
-    asteroide.ASTEROIDE_TIMER = pygame.USEREVENT + 2
-    pygame.time.set_timer(asteroide.ASTEROIDE_TIMER, 2000)
+    eventos.EVENTOS_LISTA.append(eventos.Evento('criar asteroide', 80, 200, 100))
     asteroide.ASTEROIDE_GROUP = pygame.sprite.Group()
 
     # Boosts
@@ -102,19 +101,17 @@ def main():
         else:
             delta_tempo = time.CLOCK.tick(100)*0.03
 
-        # Eventos
+        # ------
+        # EVENTOS PYGAME
+        # ------
+
         for event in pygame.event.get():
-            # Eventos do pygame
             player.PLAYER_GROUP.sprite.event_handler(event, delta_tempo)
 
             if event.type == pygame.QUIT:
                 # Sair do jogo
                 pygame.quit()
                 sys.exit()
-
-            if event.type == asteroide.ASTEROIDE_TIMER:
-                # Criar um asteroide
-                asteroide.ASTEROIDE_GROUP.add(asteroide.Asteroide('small', asteroide.ASTEROIDE_SPEED_ATUAL))
 
             # Ativar o boost do slow:
             if pygame.key.get_pressed()[pygame.K_c] and boosts.BOOSTS_COLETADOS_DICT["slow"] > 0 and not boosts.DESACELERAR:
@@ -154,8 +151,11 @@ def main():
                     player.PLAYER_GROUP.sprite.gravity = 0
                     time.START_TIME = int(pygame.time.get_ticks() / 1000)
 
+        # ------
+        # EVENTOS DEFINIDOS
+        # ------
+
         for evento in eventos.EVENTOS_LISTA:
-            # Eventos definidos
             evento_tipo = evento.coletar()
 
             if player.GAME_ACTIVE:
@@ -165,9 +165,11 @@ def main():
                 if evento_tipo == 'planeta velocidade':
                     if planet.PLANET_SPEED_ATUAL <= 20:
                         planet.PLANET_SPEED_ATUAL += 0.5
+
                 if evento_tipo == 'boost velocidade':
                     if boosts.BOOST_SPEED_ATUAL <= 20:
                         boosts.BOOST_SPEED_ATUAL += 0.5
+
                 if evento_tipo == 'criar planeta':
                     # Criar um planeta de tipo aleatório
                     planet.PLANET_GROUP.add(
@@ -176,6 +178,10 @@ def main():
                 if evento_tipo == 'criar boost':
                     # Criar um boost aleatório
                     boosts.BOOST_GROUP.add(boosts.Boost(choice(['shield', 'speed', 'slow']), boosts.BOOST_SPEED_ATUAL))
+
+                if evento_tipo == 'criar asteroide':
+                    # Criar um asteroide
+                    asteroide.ASTEROIDE_GROUP.add(asteroide.Asteroide('small', asteroide.ASTEROIDE_SPEED_ATUAL))
 
         if player.GAME_ACTIVE:
             # Ações a cada frame no jogo ativo
