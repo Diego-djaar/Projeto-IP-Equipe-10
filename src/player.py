@@ -43,7 +43,7 @@ class Player(pygame.sprite.Sprite):
         if not boosts.HYPERSPEED:
             self.gravity += 0.25*delta_tempo
             self.rect.y += self.gravity*delta_tempo
-            
+
         if self.rect.top > display.DISPLAY_H+200 or self.rect.bottom < -200:
             # Morre ao sair do display
             current_module = sys.modules[__name__]
@@ -52,14 +52,14 @@ class Player(pygame.sprite.Sprite):
 
     def atirar(self):
         tempo = score.display_score()
-        if tiro.TIRO_TIMER <= 0 and tempo >= 1:
+        if tiro.TIRO_TIMER <= 0 and tempo >= 1 and not boosts.HYPERSPEED:
             tiro.TIRO_GROUP.add(Tiro(self.rect.centerx + 100, self.rect.centery + 100))
             tiro.TIRO_TIMER = tiro.TIRO_INTERVALO
 
     def estado_animacao(self):
         if self.efeito_escudo > 0:
             self.indx_anim = 1
-        
+
         elif boosts.HYPERSPEED:
             self.indx_anim = 2
 
