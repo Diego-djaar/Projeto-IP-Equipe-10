@@ -77,9 +77,6 @@ def main():
 
     # Tiros
     tiro.TIRO_GROUP = pygame.sprite.Group()
-    tiro.TIRO_SPEED = pygame.USEREVENT + 6
-    pygame.time.set_timer(tiro.TIRO_SPEED, 4000)
-    tiro.TIRO_RECT_LIST = []
 
     # Boost de slow:
     slow_cancel = pygame.USEREVENT + 7
