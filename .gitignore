@@ -1,0 +1,8 @@
+# Ingorar arquivos no repositório
+/__pycache__
+*/__pycache__
+.vscode/
+# Removidos
+/sprites
+/images
+main_old.py
