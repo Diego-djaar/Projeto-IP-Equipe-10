@@ -124,6 +124,9 @@ def main():
                     for evento_list in eventos.EVENTOS_LISTA_DICT.items():
                         for evento in evento_list[1]:
                             evento.reiniciar()
+                    boosts.DESACELERAR = False
+                    player.PROTEGIDO = False
+                    player.PLAYER_GROUP.sprite.efeito_escudo = 0
 
         # ------
         # EVENTOS DEFINIDOS
