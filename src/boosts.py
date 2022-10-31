@@ -2,18 +2,20 @@ import math
 import sys
 import pygame
 from random import randint, uniform
+from src import player
 from . import display
 
 
-BOOST_GROUP: pygame.sprite.GroupSingle
+BOOST_GROUP: pygame.sprite.Group
 BOOSTS_COLETADOS_DICT: dict
 BOOST_TIMER: int
-SHIELD_IMAGE: pygame.Surface = None
-SPEED_IMAGE: pygame.Surface = None
-SLOW_IMAGE: pygame.Surface = None
+SHIELD_IMAGE: dict = None
+SPEED_IMAGE: dict = None
+SLOW_IMAGE: dict = None
 BOOST_SPEED_EVENT: int
 BOOST_SPEED_BASE = 4
 BOOST_SPEED_ATUAL = 4
+DESACELERAR = False
 
 
 class Boost(pygame.sprite.Sprite):
@@ -25,22 +27,37 @@ class Boost(pygame.sprite.Sprite):
 
         if self.type == 'shield':
             if current_module.SHIELD_IMAGE is None:
-                current_module.SHIELD_IMAGE = self.image = pygame.image.load('graphics/boost/shield_0.png').convert_alpha()
-            self.image = current_module.SHIELD_IMAGE
-            self.image = pygame.transform.rotozoom(self.image, 0, 0.4)
+                current_module.SHIELD_IMAGE =\
+                    dict(normal=pygame.image.load('graphics/boost/shield_0.png').convert_alpha(),
+                         cinza=pygame.image.load('graphics_cinza/boost/shield_0.png').convert_alpha())
+                current_module.SHIELD_IMAGE['normal'] = pygame.transform.rotozoom(current_module.SHIELD_IMAGE['normal'], 0, 0.4)
+                current_module.SHIELD_IMAGE['cinza'] = pygame.transform.rotozoom(current_module.SHIELD_IMAGE['cinza'], 0, 0.4)
+
+            self.image_dir = current_module.SHIELD_IMAGE
+            self.image = self.image_dir[player.GAME_MODE]
 
         elif self.type == 'speed':
             if current_module.SPEED_IMAGE is None:
-                current_module.SPEED_IMAGE = self.image = pygame.image.load('graphics/boost/speed_0.png').convert_alpha()
-            self.image = current_module.SPEED_IMAGE
-            self.image = pygame.transform.rotozoom(self.image, 0, 0.35)
+                current_module.SPEED_IMAGE =\
+                    dict(normal=pygame.image.load('graphics/boost/speed_0.png').convert_alpha(),
+                         cinza=pygame.image.load('graphics_cinza/boost/speed_0.png').convert_alpha())
+                current_module.SPEED_IMAGE['normal'] = pygame.transform.rotozoom(current_module.SPEED_IMAGE['normal'], 0, 0.35)
+                current_module.SPEED_IMAGE['cinza'] = pygame.transform.rotozoom(current_module.SPEED_IMAGE['cinza'], 0, 0.35)
+
+            self.image_dir = current_module.SPEED_IMAGE
+            self.image = self.image_dir[player.GAME_MODE]
 
         # Definindo boost de desacelerar o tempo:
         elif self.type == 'slow':
             if current_module.SLOW_IMAGE is None:
-                current_module.SLOW_IMAGE = self.image = pygame.image.load('graphics/boost/slow_0.png').convert_alpha()
-            self.image = current_module.SLOW_IMAGE
-            self.image = pygame.transform.rotozoom(self.image, 0, 0.2)
+                current_module.SLOW_IMAGE =\
+                    dict(normal=pygame.image.load('graphics/boost/slow_0.png').convert_alpha(),
+                         cinza=pygame.image.load('graphics_cinza/boost/slow_0.png').convert_alpha())
+                current_module.SLOW_IMAGE['normal'] = pygame.transform.rotozoom(current_module.SLOW_IMAGE['normal'], 0, 0.18)
+                current_module.SLOW_IMAGE['cinza'] = pygame.transform.rotozoom(current_module.SLOW_IMAGE['cinza'], 0, 0.18)
+
+            self.image_dir = current_module.SLOW_IMAGE
+            self.image = self.image_dir[player.GAME_MODE]
 
         self.wave = randint(70, 100)
         self.rect = self.image.get_rect(midleft=(display.DISPLAY_W*1.5, uniform(display.DISPLAY_H*0.3, display.DISPLAY_H*0.7)))
