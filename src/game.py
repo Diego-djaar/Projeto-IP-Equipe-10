@@ -97,14 +97,11 @@ def main():
     # ------
 
     while True:
+        delta_tempo = time.CLOCK.tick(100)*0.06
         if boosts.DESACELERAR:
-            delta_tempo = time.CLOCK.tick(100)*0.03
-
-        elif boosts.HYPERSPEED:
-            delta_tempo = time.CLOCK.tick(100)*0.50
-
-        else:
-            delta_tempo = time.CLOCK.tick(100)*0.06
+            delta_tempo *= 0.5
+        if boosts.HYPERSPEED:
+            delta_tempo *= 9
 
         # ------
         # EVENTOS PYGAME

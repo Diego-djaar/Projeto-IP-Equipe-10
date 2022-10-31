@@ -57,11 +57,12 @@ class Player(pygame.sprite.Sprite):
             tiro.TIRO_TIMER = tiro.TIRO_INTERVALO
 
     def estado_animacao(self):
-        if self.efeito_escudo > 0:
-            self.indx_anim = 1
 
-        elif boosts.HYPERSPEED:
+        if boosts.HYPERSPEED:
             self.indx_anim = 2
+
+        elif self.efeito_escudo > 0:
+            self.indx_anim = 1
 
         else:
             self.indx_anim = 0
