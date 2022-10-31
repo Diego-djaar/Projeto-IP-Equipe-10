@@ -58,18 +58,18 @@ def main():
     planet.PLANET_GROUP = pygame.sprite.Group()
 
     # Asteroides
-    eventos.EVENTOS_LISTA_DICT['criar asteroide'] = eventos.Evento('criar asteroide', 80, 200, 100)
+    eventos.EVENTOS_LISTA_DICT['criar asteroide'] = [eventos.Evento('criar asteroide', 80, 200, 100)]
     asteroide.ASTEROIDE_GROUP = pygame.sprite.Group()
 
     # Boosts
-    eventos.EVENTOS_LISTA_DICT['criar boost'] = eventos.Evento('criar boost', 5, 7, 0)
+    eventos.EVENTOS_LISTA_DICT['criar boost'] = [eventos.Evento('criar boost', 5, 10, 0)]
     boosts.BOOST_GROUP = pygame.sprite.Group()
 
     # Velocidade dos objetos
-    eventos.EVENTOS_LISTA_DICT['planeta velocidade'] = eventos.Evento('planeta velocidade', 400, 400, 400)
+    eventos.EVENTOS_LISTA_DICT['planeta velocidade'] = [eventos.Evento('planeta velocidade', 400, 400, 400)]
     planet.PLANET_SPEED_ATUAL = planet.PLANET_SPEED_BASE
 
-    eventos.EVENTOS_LISTA_DICT['boost velocidade'] = eventos.Evento('boost velocidade', 400, 400, 400)
+    eventos.EVENTOS_LISTA_DICT['boost velocidade'] = [eventos.Evento('boost velocidade', 400, 400, 400)]
     boosts.BOOST_SPEED_ATUAL = boosts.BOOST_SPEED_BASE
 
     # Player
@@ -80,10 +80,10 @@ def main():
     tiro.TIRO_GROUP = pygame.sprite.Group()
 
     # Boost de slow:
-    eventos.EVENTOS_LISTA_DICT['cancelar slow'] = eventos.Evento('cancelar slow', -1, -1, 150, True)
+    eventos.EVENTOS_LISTA_DICT['cancelar slow'] = [eventos.Evento('cancelar slow', -1, -1, 150, True)]
 
     # Boost de speed:
-    eventos.EVENTOS_LISTA_DICT['cancelar speed'] = eventos.Evento('cancelar speed', -1, -1, 500, True)
+    eventos.EVENTOS_LISTA_DICT['cancelar speed'] = [eventos.Evento('cancelar speed', -1, -1, 500, True)]
 
     if argumentos.DEBUG:
         mouse_pos = pygame.sprite.Sprite()
@@ -133,13 +133,7 @@ def main():
         # ------
 
         for evento_list in eventos.EVENTOS_LISTA_DICT.items():
-            # Lidar com multi_eventos
-            if type(evento_list[1]) is not list:
-                evento_lista = [evento_list[1]]
-            else:
-                evento_lista = evento_list[1]
-
-            for evento in evento_lista:
+            for evento in evento_list[1]:
                 evento_tipo = evento.coletar()
 
                 if player.GAME_ACTIVE:
@@ -205,7 +199,7 @@ def main():
                     planeta.image = planeta.image_dir['cinza']
 
                 evento_slow = eventos.EVENTOS_LISTA_DICT['cancelar slow']
-                evento_slow.reiniciar()
+                evento_slow[0].reiniciar()
 
             # Ativar o boost de speed
             if pygame.key.get_pressed()[pygame.K_z] and boosts.BOOSTS_COLETADOS_DICT["speed"] > 0:
@@ -213,7 +207,7 @@ def main():
                 boosts.HYPERSPEED = True
 
                 evento_speed = eventos.EVENTOS_LISTA_DICT['cancelar speed']
-                evento_speed.reiniciar()
+                evento_speed[0].reiniciar()
 
             # Tornar tela cinza se boost de slow.
             if boosts.DESACELERAR:
@@ -226,14 +220,7 @@ def main():
 
             # Atualizar eventos
             for evento_list in eventos.EVENTOS_LISTA_DICT.items():
-
-                # Lidar com multi_eventos
-                if type(evento_list[1]) is not list:
-                    evento_lista = [evento_list[1]]
-                else:
-                    evento_lista = evento_list[1]
-
-                for evento in evento_lista:
+                for evento in evento_list[1]:
                     evento: eventos.Evento
                     evento.update(delta_tempo)
 

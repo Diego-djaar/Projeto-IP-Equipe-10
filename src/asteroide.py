@@ -6,9 +6,7 @@ from . import display
 
 
 ASTEROIDE_GROUP: pygame.sprite.Group
-ASTEROIDE_TIMER: int
 ASTEROIDE_IMAGE: pygame.Surface = None
-ASTEROIDE_SPEED_EVENT: int
 ASTEROIDE_SPEED_BASE = 7
 ASTEROIDE_SPEED_ATUAL = 7
 
