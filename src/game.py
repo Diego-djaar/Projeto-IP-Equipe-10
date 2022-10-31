@@ -120,6 +120,10 @@ def main():
                     player.PLAYER_GROUP.sprite.rect.y = display.DISPLAY_H*0.6
                     player.PLAYER_GROUP.sprite.gravity = 0
                     time.START_TIME = int(pygame.time.get_ticks() / 1000)
+                    # Reiniciar eventos
+                    for evento_list in eventos.EVENTOS_LISTA_DICT.items():
+                        for evento in evento_list[1]:
+                            evento.reiniciar()
 
         # ------
         # EVENTOS DEFINIDOS
