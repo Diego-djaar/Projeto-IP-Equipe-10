@@ -1,16 +1,13 @@
-from tkinter import S
 import pygame
 import math
 from random import randint, choice
 from . import display
 from . import time
 
-def display_hscore(score, hscore):
-    if score > hscore:
-        hscore = score
 
+def display_hscore(hscore):
     # High Score
-    score_surf = display.FONT.render(f'Highest Score: {score}', False, (250, 150, 200))
+    score_surf = display.FONT.render(f'Highest Score: {hscore:0.0f}', False, (250, 150, 200))
     score_rect = score_surf.get_rect(topleft=(450, 300))
 
     # Mensagem em tela
@@ -22,4 +19,3 @@ def display_hscore(score, hscore):
 
     display.DISPLAY.blit(score_surf, score_rect)
     display.DISPLAY.blit(text1, textdefault)
-    return hscore

@@ -82,7 +82,6 @@ def main():
     tiro.TIRO_GROUP = pygame.sprite.Group()
 
     # Pontuação - HighScore
-    score = 0
     hscore = 0
 
     # Boost de slow:
@@ -277,7 +276,9 @@ def main():
             boosts.BOOST_GROUP.empty()
             tiro.TIRO_GROUP.empty()
             asteroide.ASTEROIDE_GROUP.empty()
-            hscore = display_hscore(score, hscore)
+            display_hscore(hscore)
+            if score.SCORE > hscore:
+                hscore = score.SCORE
 
             # Reset da velocidade dos objetos:
             boosts.BOOST_SPEED_ATUAL = boosts.BOOST_SPEED_BASE
