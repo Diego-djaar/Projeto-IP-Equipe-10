@@ -3,6 +3,7 @@ import sys
 from random import randint, choice
 from .planet import Planet
 from . import boosts
+from .highscore import display_hscore
 from .score import display_score
 from .collision import collision_group_group, collision_sprite_group
 from .tiro import Tiro
@@ -80,6 +81,10 @@ def main():
     tiro.TIRO_SPEED = pygame.USEREVENT + 6
     pygame.time.set_timer(tiro.TIRO_SPEED, 4000)
     tiro.TIRO_RECT_LIST = []
+
+    # Pontuação - HighScore
+    score = 0
+    hscore = 0
 
     # Boost de slow:
     slow_cancel = pygame.USEREVENT + 7
@@ -240,6 +245,7 @@ def main():
             boosts.BOOST_GROUP.empty()
             tiro.TIRO_GROUP.empty()
             asteroide.ASTEROIDE_GROUP.empty()
+            hscore = display_hscore(score, hscore)
 
             # Reset da velocidade dos objetos:
             boosts.BOOST_SPEED_ATUAL = boosts.BOOST_SPEED_BASE
