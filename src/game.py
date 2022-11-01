@@ -4,6 +4,7 @@ from random import randint, choice
 from . import eventos
 from .planet import Planet
 from . import boosts
+from .highscore import display_hscore
 from .score import display_score
 from .collision import collision_group_group, collision_sprite_group
 from .tiro import Tiro
@@ -79,6 +80,10 @@ def main():
 
     # Tiros
     tiro.TIRO_GROUP = pygame.sprite.Group()
+
+    # Pontuação - HighScore
+    score = 0
+    hscore = 0
 
     # Boost de slow:
     eventos.EVENTOS_LISTA_DICT['cancelar slow'] = [eventos.Evento('cancelar slow', -1, -1, 150, True)]
@@ -272,6 +277,7 @@ def main():
             boosts.BOOST_GROUP.empty()
             tiro.TIRO_GROUP.empty()
             asteroide.ASTEROIDE_GROUP.empty()
+            hscore = display_hscore(score, hscore)
 
             # Reset da velocidade dos objetos:
             boosts.BOOST_SPEED_ATUAL = boosts.BOOST_SPEED_BASE
