@@ -14,6 +14,7 @@ from . import time
 from . import argumentos
 from . import tiro
 from . import asteroide
+from . import score
 
 
 def main():
@@ -128,6 +129,8 @@ def main():
                     player.PROTEGIDO = False
                     player.PLAYER_GROUP.sprite.efeito_escudo = 0
 
+                    score.SCORE = 0
+
         # ------
         # EVENTOS DEFINIDOS
         # ------
@@ -179,6 +182,8 @@ def main():
         # ------
 
         if player.GAME_ACTIVE:
+
+            score.SCORE += delta_tempo/30
 
             # Ativar o boost do slow:
             if pygame.key.get_pressed()[pygame.K_c] and boosts.BOOSTS_COLETADOS_DICT["slow"] > 0 and not boosts.DESACELERAR:

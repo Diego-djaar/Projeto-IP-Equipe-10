@@ -2,7 +2,6 @@ import pygame
 import sys
 import math
 from random import randint, choice
-
 from src import boosts
 from . import display
 from . import collision
