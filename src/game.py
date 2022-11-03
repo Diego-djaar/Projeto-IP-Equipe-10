@@ -248,7 +248,8 @@ def main():
                 player.GAME_ACTIVE = False
 
             # Detectar colisão entre jogador e algum inimigo
-            if collision_sprite_group(player.PLAYER_GROUP.sprite, inimigo.INIMIGO_GROUP):
+            if collision_sprite_group(player.PLAYER_GROUP.sprite, inimigo.INIMIGO_GROUP)\
+                    and player.PROTEGIDO is False:
                 # Bater num inimigo qualquer
                 player.GAME_ACTIVE = False
 
