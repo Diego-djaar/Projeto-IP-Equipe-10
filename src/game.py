@@ -64,7 +64,7 @@ def main():
     asteroide.ASTEROIDE_GROUP = pygame.sprite.Group()
 
     # Boosts
-    eventos.EVENTOS_LISTA_DICT['criar boost'] = [eventos.Evento('criar boost', 5, 10, 0)]
+    eventos.EVENTOS_LISTA_DICT['criar boost'] = [eventos.Evento('criar boost', 250, 400, 250)]
     boosts.BOOST_GROUP = pygame.sprite.Group()
 
     # Velocidade dos objetos
