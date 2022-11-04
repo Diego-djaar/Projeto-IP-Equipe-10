@@ -64,7 +64,7 @@ def main():
     asteroide.ASTEROIDE_GROUP = pygame.sprite.Group()
 
     # Boosts
-    eventos.EVENTOS_LISTA_DICT['criar boost'] = [eventos.Evento('criar boost', 250, 400, 250)]
+    eventos.EVENTOS_LISTA_DICT['criar boost'] = [eventos.Evento('criar boost', 500, 1000, 500)]
     boosts.BOOST_GROUP = pygame.sprite.Group()
 
     # Velocidade dos objetos
@@ -87,6 +87,9 @@ def main():
     # Boost de slow:
     eventos.EVENTOS_LISTA_DICT['cancelar slow'] = [eventos.Evento('cancelar slow', -1, -1, 150, True)]
 
+    # Boost de speed:
+    eventos.EVENTOS_LISTA_DICT['cancelar speed'] = [eventos.Evento('cancelar speed', -1, -1, 500, True)]
+
     if argumentos.DEBUG:
         mouse_pos = pygame.sprite.Sprite()
         mouse_pos.image = pygame.image.load('./graphics/planet/planet_1.png').convert_alpha()
@@ -99,10 +102,11 @@ def main():
     # ------
 
     while True:
-        if not boosts.DESACELERAR:
-            delta_tempo = time.CLOCK.tick(100)*0.06
-        else:
-            delta_tempo = time.CLOCK.tick(100)*0.03
+        delta_tempo = time.CLOCK.tick(100)*0.06
+        if boosts.DESACELERAR:
+            delta_tempo *= 0.5
+        if boosts.HYPERSPEED:
+            delta_tempo *= 9
 
         # ------
         # EVENTOS PYGAME
@@ -181,6 +185,11 @@ def main():
                         evento.travar()
                         boosts.DESACELERAR = False
 
+                    # Cancelar speed
+                    if evento_tipo == 'cancelar speed':
+                        evento.travar()
+                        boosts.HYPERSPEED = False
+
         # ------
         # AÇÕES A CADA FRAME
         # ------
@@ -204,6 +213,14 @@ def main():
 
                 evento_slow = eventos.EVENTOS_LISTA_DICT['cancelar slow']
                 evento_slow[0].reiniciar()
+
+            # Ativar o boost de speed
+            if pygame.key.get_pressed()[pygame.K_z] and boosts.BOOSTS_COLETADOS_DICT["speed"] > 0:
+                boosts.BOOSTS_COLETADOS_DICT['speed'] -= 1
+                boosts.HYPERSPEED = True
+
+                evento_speed = eventos.EVENTOS_LISTA_DICT['cancelar speed']
+                evento_speed[0].reiniciar()
 
             # Tornar tela cinza se boost de slow.
             if boosts.DESACELERAR:
@@ -255,15 +272,23 @@ def main():
 
             # Detectar colisão entre jogador e algum planeta
             if collision_sprite_group(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP)\
-                    and player.PROTEGIDO is False:
+                    and player.PROTEGIDO is False and boosts.HYPERSPEED is False:
                 # Bater num planeta qualquer
                 player.GAME_ACTIVE = False
 
             # Detectar colisão entre jogador e algum asteroide
             if collision_sprite_group(player.PLAYER_GROUP.sprite, asteroide.ASTEROIDE_GROUP)\
-                    and player.PROTEGIDO is False:
+                    and player.PROTEGIDO is False and boosts.HYPERSPEED is False:
                 # Bater num asteroide qualquer
                 player.GAME_ACTIVE = False
+
+            # Detectar colisão entre jogador e planeta e destruir planeta se hyperspeed
+            for planeta in collision_sprite_group(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP):
+                planeta.kill()
+
+            # Detectar colisão entre jogador e asteroides e destruir asteroides se hyperspeed
+            for asteroides in collision_sprite_group(player.PLAYER_GROUP.sprite, asteroide.ASTEROIDE_GROUP):
+                asteroides.kill()
 
             # Colisões entre jogador e os boosts
             for boost in collision_sprite_group(player.PLAYER_GROUP.sprite, boosts.BOOST_GROUP):
@@ -283,6 +308,7 @@ def main():
             # Reset da velocidade dos objetos:
             boosts.BOOST_SPEED_ATUAL = boosts.BOOST_SPEED_BASE
             planet.PLANET_SPEED_ATUAL = planet.PLANET_SPEED_BASE
+            boosts.DESACELERAR = False
 
         # Debug
         if argumentos.DEBUG:
