@@ -65,8 +65,7 @@ def main():
     asteroide.ASTEROIDE_GROUP = pygame.sprite.Group()
 
     # inimigos
-    inimigo.INIMIGO_TIMER = pygame.USEREVENT + 3
-    pygame.time.set_timer(inimigo.INIMIGO_TIMER, 4000)
+    eventos.EVENTOS_LISTA_DICT['criar inimigo'] = [eventos.Evento('criar inimigo', 80, 200, 0)]
     inimigo.INIMIGO_GROUP = pygame.sprite.Group()
 
     # Boosts
@@ -126,10 +125,6 @@ def main():
                 pygame.quit()
                 sys.exit()
 
-            if event.type == inimigo.INIMIGO_TIMER:
-                # Criar um inimigo
-                inimigo.INIMIGO_GROUP.add(inimigo.Inimigo(inimigo.INIMIGO_SPEED_ATUAL))
-
             if not player.GAME_ACTIVE:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     # (Re)começar o jogo
@@ -181,6 +176,10 @@ def main():
                     if evento_tipo == 'criar asteroide':
                         # Criar um asteroide
                         asteroide.ASTEROIDE_GROUP.add(asteroide.Asteroide('small', asteroide.ASTEROIDE_SPEED_ATUAL))
+
+                    if evento_tipo == 'criar inimigo':
+                        # Criar um inimigo
+                        inimigo.INIMIGO_GROUP.add(inimigo.Inimigo(inimigo.INIMIGO_SPEED_ATUAL))
 
                     # Cancelar slow:
                     if evento_tipo == 'cancelar slow':
