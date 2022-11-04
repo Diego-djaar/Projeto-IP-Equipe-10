@@ -282,13 +282,14 @@ def main():
                 # Bater num asteroide qualquer
                 player.GAME_ACTIVE = False
 
-            # Detectar colisão entre jogador e planeta e destruir planeta se hyperspeed
-            for planeta in collision_sprite_group(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP):
-                planeta.kill()
+            if boosts.HYPERSPEED:
+                # Detectar colisão entre jogador e planeta e destruir planeta se hyperspeed
+                for planeta in collision_sprite_group(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP):
+                    planeta.kill()
 
-            # Detectar colisão entre jogador e asteroides e destruir asteroides se hyperspeed
-            for asteroides in collision_sprite_group(player.PLAYER_GROUP.sprite, asteroide.ASTEROIDE_GROUP):
-                asteroides.kill()
+                # Detectar colisão entre jogador e asteroides e destruir asteroides se hyperspeed
+                for asteroides in collision_sprite_group(player.PLAYER_GROUP.sprite, asteroide.ASTEROIDE_GROUP):
+                    asteroides.kill()
 
             # Colisões entre jogador e os boosts
             for boost in collision_sprite_group(player.PLAYER_GROUP.sprite, boosts.BOOST_GROUP):
