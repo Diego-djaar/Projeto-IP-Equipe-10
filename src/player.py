@@ -26,7 +26,7 @@ class Player(pygame.sprite.Sprite):
         self.indx_anim = 0
 
         self.image = self.animacao[self.indx_anim]
-        #self.image = pygame.transform.rotozoom(self.image, 0, 0.35)
+         #self.image = pygame.transform.rotozoom(self.image, 0, 0.35)
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.mask.get_rect(center=(display.DISPLAY_W*0.25, display.DISPLAY_H*0.7))
         self.gravity = 0
