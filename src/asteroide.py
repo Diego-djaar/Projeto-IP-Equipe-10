@@ -23,7 +23,7 @@ class Asteroide(pygame.sprite.Sprite):
             if current_module.ASTEROIDE_IMAGE is None:
                 current_module.ASTEROIDE_IMAGE = self.image = pygame.image.load('graphics/asteroide/asteroide.png').convert_alpha()
             self.image = current_module.ASTEROIDE_IMAGE
-            self.image = pygame.transform.rotozoom(self.image, 0, 0.7)
+            self.image = pygame.transform.rotozoom(self.image, 0, 0.4)
             self.speed = speed
 
         self.mask = pygame.mask.from_surface(self.image)
