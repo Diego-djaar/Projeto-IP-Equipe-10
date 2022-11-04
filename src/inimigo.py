@@ -15,7 +15,10 @@ INIMIGO_SPEED_EVENT: int
 INIMIGO_SPEED_BASE = 7
 INIMIGO_SPEED_ATUAL = 7
 
+
 class Inimigo(pygame.sprite.Sprite):
+    pontos_de_vida = 2
+
     def __init__(self, speed):
         super().__init__()
         current_module = sys.modules[__name__]
@@ -36,10 +39,12 @@ class Inimigo(pygame.sprite.Sprite):
         # hora de morte
         self.hm = 0
 
-    def check_collision(self):
-        if len(collision.collision_sprite_group(self, tiro.TIRO_GROUP)) > 0 and self.atingido is False:
+    def dano(self):
+        if self.atingido is False and self.pontos_de_vida == 1:
             self.atingido = True
             self.hm = pygame.time.get_ticks() + 140
+        else:
+            self.pontos_de_vida -= 1
 
     def aproximar(self):
         if self.rect.y < player.PLAYER_GROUP.sprite.rect.y:
@@ -67,5 +72,3 @@ class Inimigo(pygame.sprite.Sprite):
         self.movement(delta_tempo)
         self.try_destroy()
         self.aproximar()
-        self.check_collision()
-

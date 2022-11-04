@@ -287,6 +287,7 @@ def main():
             # Colisões entre tiro e inimigo
             for (tiros, inimigos) in collision_group_group(tiro.TIRO_GROUP, inimigo.INIMIGO_GROUP):
                 tiros.kill()
+                inimigos.dano()
 
             # Detectar colisão entre jogador e algum planeta
             if collision_sprite_group(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP)\
