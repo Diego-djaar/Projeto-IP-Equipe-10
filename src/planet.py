@@ -7,10 +7,8 @@ from . import player
 
 
 PLANET_GROUP: pygame.sprite.Group
-PLANET_TIMER: int
 PLANET_0_IMAGE: dict = None
 PLANET_1_IMAGE: dict = None
-PLANET_SPEED_EVENT: int
 PLANET_SPEED_BASE = 6
 PLANET_SPEED_ATUAL = 6
 
