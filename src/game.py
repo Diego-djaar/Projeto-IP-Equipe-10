@@ -132,7 +132,7 @@ def main():
 
                 if event.type == boosts.BOOST_TIMER:
                     # Criar um boost aleatório
-                    boosts.BOOST_GROUP.add(boosts.Boost(choice(['shield', 'shield', 'shield']), boosts.BOOST_SPEED_ATUAL))
+                    boosts.BOOST_GROUP.add(boosts.Boost(choice(['shield', 'speed', 'slow']), boosts.BOOST_SPEED_ATUAL))
 
                 # Ativar o boost do slow:
                 if pygame.key.get_pressed()[pygame.K_c] and boosts.BOOSTS_COLETADOS_DICT["slow"] > 0 and not boosts.DESACELERAR:

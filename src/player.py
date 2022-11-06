@@ -26,7 +26,7 @@ class Player(pygame.sprite.Sprite):
         self.indx_anim = 0
 
         self.image = self.animacao[self.indx_anim]
-         #self.image = pygame.transform.rotozoom(self.image, 0, 0.35)
+        self.image = pygame.transform.rotozoom(self.image, 0, 1)
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.mask.get_rect(center=(display.DISPLAY_W*0.25, display.DISPLAY_H*0.7))
         self.gravity = 0
@@ -50,7 +50,7 @@ class Player(pygame.sprite.Sprite):
     def atirar(self):
         tempo = score.display_score()
         if tiro.TIRO_TIMER <= 0 and tempo >= 1:
-            tiro.TIRO_GROUP.add(Tiro(self.rect.centerx + 100, self.rect.centery + 100))
+            tiro.TIRO_GROUP.add(Tiro(self.rect.centerx + 0, self.rect.centery + 50))
             tiro.TIRO_TIMER = tiro.TIRO_INTERVALO
 
     def estado_animacao(self):
@@ -59,7 +59,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.indx_anim = 0
         self.image = self.animacao[self.indx_anim]
-        self.image = pygame.transform.rotozoom(self.image, 0, 0.35)
+        self.image = pygame.transform.rotozoom(self.image, 0, 1)
 
     def update(self, delta_tempo: float):
         if not boosts.DESACELERAR:
