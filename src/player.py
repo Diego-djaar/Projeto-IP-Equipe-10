@@ -51,7 +51,7 @@ class Player(pygame.sprite.Sprite):
     def atirar(self):
         tempo = score.display_score()
         if tiro.TIRO_TIMER <= 0 and tempo >= 1 and not boosts.HYPERSPEED:
-            tiro.TIRO_GROUP.add(Tiro(self.rect.centerx + 0, self.rect.centery + 37))
+            tiro.TIRO_GROUP.add(Tiro(self.rect.centerx + 70, self.rect.centery - 9))
             tiro.TIRO_TIMER = tiro.TIRO_INTERVALO
 
     def estado_animacao(self):
