@@ -5,8 +5,8 @@ from . import display
 
 TIRO_GROUP: pygame.sprite.Group
 TIRO_TIMER = 0
-TIRO_INTERVALO = 10
-TIRO_SPEED: int
+TIRO_INTERVALO = 18
+TIRO_SPEED: int = 10
 
 
 class Tiro(pygame.sprite.Sprite):
@@ -24,7 +24,8 @@ class Tiro(pygame.sprite.Sprite):
         ##############
 
     def update(self):
-        self.rect.x += 10
+        current_module = sys.modules[__name__]
+        self.rect.x += current_module.TIRO_SPEED
 
         if self.rect.x > 2000:
             self.kill()
