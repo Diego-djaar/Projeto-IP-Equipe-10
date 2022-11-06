@@ -47,7 +47,6 @@ class Player(pygame.sprite.Sprite):
             # Morre ao sair do display
             current_module = sys.modules[__name__]
             current_module.GAME_ACTIVE = False
-            tiro.TIRO_GROUP.empty()
 
     def atirar(self):
         tempo = score.display_score()

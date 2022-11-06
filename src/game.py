@@ -16,6 +16,7 @@ from . import argumentos
 from . import tiro
 from . import asteroide
 from . import score
+from . import inimigo
 
 
 def main():
@@ -62,6 +63,10 @@ def main():
     # Asteroides
     eventos.EVENTOS_LISTA_DICT['criar asteroide'] = [eventos.Evento('criar asteroide', 80, 200, 100)]
     asteroide.ASTEROIDE_GROUP = pygame.sprite.Group()
+
+    # inimigos
+    eventos.EVENTOS_LISTA_DICT['criar inimigo'] = [eventos.Evento('criar inimigo', 80, 200, 0)]
+    inimigo.INIMIGO_GROUP = pygame.sprite.Group()
 
     # Boosts
     eventos.EVENTOS_LISTA_DICT['criar boost'] = [eventos.Evento('criar boost', 500, 1000, 500)]
@@ -172,6 +177,10 @@ def main():
                         # Criar um asteroide
                         asteroide.ASTEROIDE_GROUP.add(asteroide.Asteroide('small', asteroide.ASTEROIDE_SPEED_ATUAL))
 
+                    if evento_tipo == 'criar inimigo':
+                        # Criar um inimigo
+                        inimigo.INIMIGO_GROUP.add(inimigo.Inimigo(inimigo.INIMIGO_SPEED_ATUAL))
+
                     # Cancelar slow:
                     if evento_tipo == 'cancelar slow':
                         # Alterar imagens dos boosts
@@ -249,6 +258,10 @@ def main():
             asteroide.ASTEROIDE_GROUP.update(delta_tempo)
             asteroide.ASTEROIDE_GROUP.draw(display.DISPLAY)
 
+            # Inimigos
+            inimigo.INIMIGO_GROUP.update(delta_tempo)
+            inimigo.INIMIGO_GROUP.draw(display.DISPLAY)
+
             # Boosts
             boosts.BOOST_GROUP.update(delta_tempo)
             boosts.BOOST_GROUP.draw(display.DISPLAY)
@@ -269,6 +282,11 @@ def main():
             for (tiros, asteroides) in collision_group_group(tiro.TIRO_GROUP, asteroide.ASTEROIDE_GROUP):
                 tiros.kill()
                 asteroides.kill()
+
+            # Colisões entre tiro e inimigo
+            for (tiros, inimigos) in collision_group_group(tiro.TIRO_GROUP, inimigo.INIMIGO_GROUP):
+                tiros.kill()
+                inimigos.dano()
 
             # Detectar colisão entre jogador e algum planeta
             if collision_sprite_group(player.PLAYER_GROUP.sprite, planet.PLANET_GROUP)\
@@ -291,6 +309,16 @@ def main():
                 for asteroides in collision_sprite_group(player.PLAYER_GROUP.sprite, asteroide.ASTEROIDE_GROUP):
                     asteroides.kill()
 
+                # Detectar colisão entre jogador e inimigos e destruir inimigos se hyperspeed
+                for inimigy in collision_sprite_group(player.PLAYER_GROUP.sprite, inimigo.INIMIGO_GROUP):
+                    inimigy.kill()
+
+            # Detectar colisão entre jogador e algum inimigo
+            if collision_sprite_group(player.PLAYER_GROUP.sprite, inimigo.INIMIGO_GROUP)\
+                    and player.PROTEGIDO is False and boosts.HYPERSPEED is False:
+                # Bater num inimigo qualquer
+                player.GAME_ACTIVE = False
+
             # Colisões entre jogador e os boosts
             for boost in collision_sprite_group(player.PLAYER_GROUP.sprite, boosts.BOOST_GROUP):
                 boosts.BOOSTS_COLETADOS_DICT[boost.type] += 1
@@ -305,6 +333,7 @@ def main():
             display_hscore(hscore)
             if score.SCORE > hscore:
                 hscore = score.SCORE
+            inimigo.INIMIGO_GROUP.empty()
 
             # Reset da velocidade dos objetos:
             boosts.BOOST_SPEED_ATUAL = boosts.BOOST_SPEED_BASE
