@@ -1,10 +1,18 @@
 Instalar o Python (se não instalado): https://www.python.org/
 
-Instalar o Pygame (se não instalado): 
-    LINUX: python3 -m pip install -U pygame --user
-    WINDOWS: py -m pip install -U pygame --user
-    MACOS: python3 -m pip install -U pygame --user
+Instalar o Pygame (se não instalado):
+LINUX: python3 -m pip install -U pygame --user
+WINDOWS: py -m pip install -U pygame --user
+MACOS: python3 -m pip install -U pygame --user
 
 Iniciar:
-    LINUX/MACOS: python3 main.py
-    WINDOWS: py main.py
+LINUX/MACOS: python3 main.py
+WINDOWS: py main.py
+
+Controles:
+Iniciar o jogo/Atirar: espaço
+Voar: seta para cima
+Boosts: 
+    - speed: Z 
+    - shield: X 
+    - Slow: C
