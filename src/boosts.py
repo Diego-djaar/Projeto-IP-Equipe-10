@@ -29,8 +29,8 @@ class Boost(pygame.sprite.Sprite):
                 current_module.SHIELD_IMAGE =\
                     dict(normal=pygame.image.load('graphics/boost/shield_0.png').convert_alpha(),
                          cinza=pygame.image.load('graphics_cinza/boost/shield_0.png').convert_alpha())
-                current_module.SHIELD_IMAGE['normal'] = pygame.transform.rotozoom(current_module.SHIELD_IMAGE['normal'], 0, 0.4)
-                current_module.SHIELD_IMAGE['cinza'] = pygame.transform.rotozoom(current_module.SHIELD_IMAGE['cinza'], 0, 0.4)
+                current_module.SHIELD_IMAGE['normal'] = pygame.transform.rotozoom(current_module.SHIELD_IMAGE['normal'], 0, 1)
+                current_module.SHIELD_IMAGE['cinza'] = pygame.transform.rotozoom(current_module.SHIELD_IMAGE['cinza'], 0, 1)
 
             self.image_dir = current_module.SHIELD_IMAGE
             self.image = self.image_dir[player.GAME_MODE]
@@ -40,8 +40,8 @@ class Boost(pygame.sprite.Sprite):
                 current_module.SPEED_IMAGE =\
                     dict(normal=pygame.image.load('graphics/boost/speed_0.png').convert_alpha(),
                          cinza=pygame.image.load('graphics_cinza/boost/speed_0.png').convert_alpha())
-                current_module.SPEED_IMAGE['normal'] = pygame.transform.rotozoom(current_module.SPEED_IMAGE['normal'], 0, 0.35)
-                current_module.SPEED_IMAGE['cinza'] = pygame.transform.rotozoom(current_module.SPEED_IMAGE['cinza'], 0, 0.35)
+                current_module.SPEED_IMAGE['normal'] = pygame.transform.rotozoom(current_module.SPEED_IMAGE['normal'], 0, 1)
+                current_module.SPEED_IMAGE['cinza'] = pygame.transform.rotozoom(current_module.SPEED_IMAGE['cinza'], 0, 1)
 
             self.image_dir = current_module.SPEED_IMAGE
             self.image = self.image_dir[player.GAME_MODE]
@@ -52,8 +52,8 @@ class Boost(pygame.sprite.Sprite):
                 current_module.SLOW_IMAGE =\
                     dict(normal=pygame.image.load('graphics/boost/slow_0.png').convert_alpha(),
                          cinza=pygame.image.load('graphics_cinza/boost/slow_0.png').convert_alpha())
-                current_module.SLOW_IMAGE['normal'] = pygame.transform.rotozoom(current_module.SLOW_IMAGE['normal'], 0, 0.18)
-                current_module.SLOW_IMAGE['cinza'] = pygame.transform.rotozoom(current_module.SLOW_IMAGE['cinza'], 0, 0.18)
+                current_module.SLOW_IMAGE['normal'] = pygame.transform.rotozoom(current_module.SLOW_IMAGE['normal'], 0, 1)
+                current_module.SLOW_IMAGE['cinza'] = pygame.transform.rotozoom(current_module.SLOW_IMAGE['cinza'], 0, 1)
 
             self.image_dir = current_module.SLOW_IMAGE
             self.image = self.image_dir[player.GAME_MODE]

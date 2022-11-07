@@ -3,6 +3,8 @@ import glob
 from platform import system
 from typing import List
 from PIL import Image
+from pathlib import Path
+
 
 # Agir de acordo com o sistema operacional
 if system() == 'Windows':
@@ -16,14 +18,14 @@ if not os.path.exists('graphics_cinza'):
 def get_files_png_and_gen_dirs(dirpath: str):
     files_paths = []
     for filename in glob.glob(os.path.join(dirpath, '*')):
-
+        print(filename)
         # Aplicar a função recursivamente em subdiretórios, adicionando os arquivos do mesmo
         files_paths.extend(get_files_png_and_gen_dirs(filename))
 
         # Converter de graphics/* para graphics_cinza/*
         new_path = filename
         new_path = new_path.split(sep)
-        new_path = dirpath + '_cinza' + sep + sep.join(new_path[1:])
+        new_path = dirpath[:-1] + '_cinza' + sep + sep.join(new_path[1:])
 
         if filename.endswith('.png'):
             # Adicionar todos os arquivos png a lista
