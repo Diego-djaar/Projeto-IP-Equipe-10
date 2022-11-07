@@ -20,7 +20,7 @@ class Tiro(pygame.sprite.Sprite):
         # retorna largura e altura da imagem
         self.size = self.image.get_size()
         # ajusta tamanho do sprite
-        self.image = pygame.transform.scale(self.image, (int(self.size[0] * 0.3), int(self.size[1] * 0.3)))
+        self.image = pygame.transform.scale(self.image, (int(self.size[0] * 1.2), int(self.size[1] * 1.2)))
         ##############
 
     def update(self):
